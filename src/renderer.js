@@ -25,7 +25,7 @@
  *  });
  * ```
  */
-
+import './index.css'
 import runApp from "./ui/App";
 
 runApp()

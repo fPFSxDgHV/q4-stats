@@ -1,6 +1,69 @@
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+@font-face {
+  font-family: "Open_Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Open_Sans/OpenSans-Light.ttf");
 }
+
+@font-face {
+  font-family: "Open_Sans";
+  font-style: italic;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Open_Sans/OpenSans-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: "Open_Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Open_Sans/OpenSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Open_Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Open_Sans/OpenSans-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Roboto/Roboto-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url("http://localhost:6007/fonts/Roboto/Roboto-Italic.ttf");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+

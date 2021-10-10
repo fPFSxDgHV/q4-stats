@@ -2,8 +2,6 @@ const path = require('path')
 const os = require('os')
 const homedir = require('os')
 
-const db = require('better-sqlite3')(DB.getDBFilePath(), {})
-
 class DB {
   static getDBFilePath() {
     return path.join(os.homedir(), '.q4-stats', 'app.db')
@@ -11,13 +9,25 @@ class DB {
 
   static setupSettings() {
     const sql = `
-    CREATE TABLE [IF NOT EXISTS] settings(
-      settings_name STRING PRIMARY KEY,
-      language STRING NOT NULL,
-    );
-    `
-    db.prepare(sql)
+    CREATE TABLE IF NOT EXISTS settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      stats_path STRING,
+      language STRING NOT NULL
+    );`
+    const stmt = db.prepare(sql)
+    console.log(stmt)
   }
 }
 
+let db = null
+if (!db) {
+  db = require('better-sqlite3')(DB.getDBFilePath(), {})
+} else {
+  console.log('db connection already established')
+}
+
+
+
 DB.setupSettings()
+
+module.exports = DB

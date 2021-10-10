@@ -3,88 +3,27 @@
   "productName": "q4-stats",
   "version": "1.0.0",
   "description": "Quake 4 stats app",
-  "main": ".webpack/main",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
-  },
-  "keywords": [],
-  "author": {
-    "name": "null",
-    "email": "null"
-  },
-  "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "q4_stats"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.js",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
-  },
+  "private": true,
   "devDependencies": {
     "@babel/core": "^7.15.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
-    "@electron-forge/cli": "6.0.0-beta.52",
-    "@electron-forge/maker-deb": "6.0.0-beta.52",
-    "@electron-forge/maker-rpm": "6.0.0-beta.52",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.52",
-    "@electron-forge/maker-zip": "6.0.0-beta.52",
-    "@electron-forge/plugin-webpack": "6.0.0-beta.52",
-    "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "6",
     "css-loader": "^3.0.0",
-    "electron-rebuild": "^3.2.3",
+    "electron-squirrel-startup": "^1.0.0",
     "node-loader": "^0.6.0",
     "style-loader": "^0.23.1",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0"
   },
   "dependencies": {
     "better-sqlite3": "7.4.0",
     "cors": "^2.8.5",
-    "electron": "~13.4.0",
-    "electron-squirrel-startup": "^1.0.0",
+    "electron": "^15.1.2",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.20.3",
     "fs-jetpack": "^4.2.0",
@@ -93,5 +32,9 @@
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
     "styled-components": "^5.3.1"
+  },
+  "scripts": {
+    "start:webpack": "webpack --watch",
+    "start:app": "electron ./dist/electron.js --trace-warnings"
   }
 }

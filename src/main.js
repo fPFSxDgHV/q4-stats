@@ -1,4 +1,5 @@
 const { app, BrowserWindow, session } = require('electron');
+console.log(BrowserWindow, session)
 const path = require('path');
 
 const initAppFolder = require('./node/appFolder')
@@ -20,7 +21,7 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadURL(path.join(__dirname,'index.html'));
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

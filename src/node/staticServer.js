@@ -18,4 +18,4 @@ function initServer() {
   }
 }
 
-initServer()
+module.exports = initServer

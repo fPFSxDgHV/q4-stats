@@ -1,6 +1,8 @@
-
 const { app, BrowserWindow, session } = require('electron');
 const path = require('path');
+
+const initAppFolder = require('./node/appFolder')
+const initStaticServer = require('./node/staticServer')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -65,10 +67,10 @@ function setupStaticProtocol() {
 }
 
 async function init() {
+  initAppFolder()
+  initStaticServer()
   await createWindowOnAppReady()
   setupListeners()
-
-  require('./node/staticServer')
 }
 
 async function onAppReady() {

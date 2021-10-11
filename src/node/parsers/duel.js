@@ -132,4 +132,8 @@ function parseDuel(xml) {
   return data
 }
 
-module.exports = parseDuel
+function getDuelData(rawData) {
+  return mapData(rawData)
+}
+
+module.exports = getDuelData

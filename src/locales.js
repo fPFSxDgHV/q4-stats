@@ -1,8 +1,8 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
-import ru from 'static/locales/ru.json'
-import en from 'static/locales/en.json'
+import ru from './static/locales/ru.json'
+import en from './static/locales/en.json'
 
 const resources = {
   en: JSON.stringify(en),
@@ -11,7 +11,7 @@ const resources = {
 
 i18n
   .use(initReactI18next)
-  init({
+  .init({
     resources,
     lng: 'en',
     interpolation: {

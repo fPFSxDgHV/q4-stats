@@ -25,8 +25,14 @@
  *  });
  * ```
  */
+import "babel-core/register"
+import "babel-polyfill"
+
 import './index.css'
 import runApp from "./ui/App";
 import './locales'
+import DB from "./ui/db";
 
 runApp()
+
+DB.init()

@@ -1,76 +1,135 @@
 const xml = `<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="../../../basics/style-078.xsl"?>
-<match id="2097134744" isTeamGame="false" map="maps/mp/l4dm2_1.map" type="Duel" datetime="2021/09/30 02-35-27" server="173.199.76.108:28004">
+<match id="4036840014" isTeamGame="false" map="maps/mp/l4dm2_1.map" type="Duel" datetime="2021/09/21 15-30-02" server="108.61.112.181:28004">
 \t<player name="sol" clan="" guid="OLC0gyMR9l8">
-\t\t<stat name="Score" value="9"/>
-\t\t<stat name="Kills" value="10"/>
-\t\t<stat name="Deaths" value="22"/>
+\t\t<stat name="Score" value="-1"/>
+\t\t<stat name="Kills" value="0"/>
+\t\t<stat name="Deaths" value="19"/>
 \t\t<stat name="Suicides" value="1"/>
 \t\t<stat name="Net" value="0"/>
-\t\t<stat name="DamageGiven" value="1821"/>
-\t\t<stat name="DamageTaken" value="3751"/>
+\t\t<stat name="DamageGiven" value="829"/>
+\t\t<stat name="DamageTaken" value="3288"/>
 \t\t<awards>
+\t\t\t<award name="Critical Failure"/>
 \t\t</awards>
 \t\t<weapons>
-\t\t\t<weapon name="Machinegun" hits="36" shots="123" kills="1"/>
-\t\t\t<weapon name="Shotgun" hits="3" shots="22" kills="0"/>
-\t\t\t<weapon name="HyperBlaster" hits="16" shots="91" kills="0"/>
-\t\t\t<weapon name="Grenade Launcher" hits="0" shots="5" kills="0"/>
-\t\t\t<weapon name="Rocket Launcher" hits="26" shots="99" kills="4"/>
-\t\t\t<weapon name="Railgun" hits="0" shots="1" kills="0"/>
-\t\t\t<weapon name="Lightning Gun" hits="150" shots="580" kills="5"/>
+\t\t\t<weapon name="Machinegun" hits="41" shots="152" kills="0"/>
+\t\t\t<weapon name="Shotgun" hits="14" shots="66" kills="0"/>
+\t\t\t<weapon name="HyperBlaster" hits="15" shots="182" kills="0"/>
+\t\t\t<weapon name="Grenade Launcher" hits="2" shots="19" kills="0"/>
+\t\t\t<weapon name="Rocket Launcher" hits="10" shots="43" kills="0"/>
+\t\t\t<weapon name="Railgun" hits="2" shots="9" kills="0"/>
+\t\t\t<weapon name="Lightning Gun" hits="34" shots="196" kills="0"/>
 \t\t</weapons>
 \t</player>
-\t<player name="Tai" clan="" guid="f9uaA8nM8Xg">
-\t\t<stat name="Score" value="21"/>
-\t\t<stat name="Kills" value="21"/>
-\t\t<stat name="Deaths" value="10"/>
-\t\t<stat name="Suicides" value="0"/>
+\t<player name="^c001toby" clan="" guid="B71Uwlyz/NU">
+\t\t<stat name="Score" value="17"/>
+\t\t<stat name="Kills" value="18"/>
+\t\t<stat name="Deaths" value="1"/>
+\t\t<stat name="Suicides" value="1"/>
 \t\t<stat name="Net" value="0"/>
-\t\t<stat name="DamageGiven" value="3751"/>
-\t\t<stat name="DamageTaken" value="1821"/>
+\t\t<stat name="DamageGiven" value="3288"/>
+\t\t<stat name="DamageTaken" value="829"/>
 \t\t<awards>
-\t\t\t<award name="impressive" value="2"/>
+\t\t\t<award name="impressive" value="9"/>
+\t\t\t<award name="combo_kill" value="1"/>
 \t\t</awards>
 \t\t<weapons>
-\t\t\t<weapon name="Machinegun" hits="4" shots="9" kills="0"/>
-\t\t\t<weapon name="HyperBlaster" hits="2" shots="29" kills="0"/>
-\t\t\t<weapon name="Grenade Launcher" hits="2" shots="3" kills="1"/>
-\t\t\t<weapon name="Rocket Launcher" hits="29" shots="53" kills="10"/>
-\t\t\t<weapon name="Railgun" hits="6" shots="10" kills="2"/>
-\t\t\t<weapon name="Lightning Gun" hits="328" shots="1035" kills="8"/>
+\t\t\t<weapon name="Grenade Launcher" hits="0" shots="9" kills="0"/>
+\t\t\t<weapon name="Rocket Launcher" hits="28" shots="71" kills="6"/>
+\t\t\t<weapon name="Railgun" hits="23" shots="34" kills="11"/>
+\t\t\t<weapon name="Lightning Gun" hits="52" shots="140" kills="1"/>
 \t\t</weapons>
 \t</player>
 </match>
 `
 require('util').inspect.defaultOptions.depth = null
 const parser = require('fast-xml-parser')
-const options = {
-  attributeNamePrefix : "",
-  attrNodeName: false, //default is 'false'
-  textNodeName : "#text",
-  ignoreAttributes : false,
-  ignoreNameSpace : false,
-  allowBooleanAttributes : false,
-  parseNodeValue : false,
-  parseAttributeValue : true,
-  trimValues: true,
-  cdataTagName: "__cdata", //default is 'false'
-  cdataPositionChar: "\\c",
-  parseTrueNumberOnly: false,
-  numParseOptions:{
-    hex: true,
-    leadingZeros: true,
-    //skipLike: /\+[0-9]{10}/
-  },
-  arrayMode: false, //"strict"
-  stopNodes: ["parse-me-as-string"]
-};
+const Parser = require("./parser");
 
-console.log(parser.validate(xml))
-
-if (parser.validate(xml)) {
-  const obj = parser.parse(xml, options)
-  console.log(obj)
-  const json = parser.convertToJson(obj)
-  console.log('json',json)
+function getStat(statArray, stat) {
+  return statArray?.find(q => q?.name?.toLowerCase() === stat?.toLowerCase())?.value
 }
+
+function getAwards(awards) {
+  if (Array.isArray(awards)) {
+    return awards
+  } else {
+    return [awards]
+  }
+}
+
+function mapWeaponName(name) {
+  const names = {
+    Machinegun: 'Machinegun',
+    Shotgun: 'Shotgun',
+    HyperBlaster: 'HyperBlaster',
+    'Grenade Launcher': 'GrenadeLauncher',
+    'Rocket Launcher': 'RocketLauncher',
+    Railgun: 'Railgun',
+    'Lightning Gun': 'LightningGun'
+  }
+
+  for (const nameInNames of Object.keys(names)) {
+    if (name === nameInNames) {
+      return names[nameInNames]
+    }
+  }
+}
+
+function getWeapons(weapons) {
+  const updatedWeaponsObj = weapons.map(q => ({
+    [mapWeaponName(q.name)]: {
+      hits: q?.hits,
+      shots: q?.shots,
+      kills: q?.kills,
+    }
+  }))
+  const result = {}
+  updatedWeaponsObj.forEach(q => {
+    const gunName = Object.keys(q)?.[0]
+    result[gunName] = q[gunName]
+  })
+  return result
+}
+
+function getPlayers(players) {
+  return players.map(player => ({
+    name: player?.name,
+    clan: player?.clan,
+    guid: player?.guid,
+    score: getStat(player?.stat, 'score'),
+    kills: getStat(player?.stat, 'kills'),
+    suicides: getStat(player?.stat, 'suicides'),
+    net: getStat(player?.stat, 'net'),
+    damageGiven: getStat(player?.stat, 'damagegiven'),
+    damageTaken: getStat(player?.stat, 'damagetaken'),
+    awards: getAwards(player?.awards?.award),
+    weapons: getWeapons(player?.weapons?.weapon)
+  }))
+}
+
+function mapData(data) {
+  const match = data?.match
+  if (!match) {
+    return null
+  }
+  return {
+    isTeamGame: match?.isTeamGame,
+    matchId: match?.id,
+    map: match?.map,
+    datetime: match?.datetime,
+    server: match?.server,
+    players: getPlayers(match?.player)
+
+  }
+}
+
+function parseDuel(xml) {
+  const rawData = Parser.parseXML(xml)
+  const data = mapData(rawData)
+  console.log(data)
+
+  return data
+}
+
+module.exports = parseDuel

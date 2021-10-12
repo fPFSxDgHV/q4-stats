@@ -14,8 +14,9 @@ const duelTable = {
   name: 'Duel',
   columns: {
     id: {primaryKey: true, autoIncrement: true},
-    isTeamGame: {dataType: 'string'},
-    matchId: {dataType: 'string'},
+    type: {dataType: 'string'},
+    isTeamGame: {dataType: 'boolean'},
+    matchId: {dataType: 'string', unique: true},
     map: {dataType: 'string', notNull: true},
     datetime: {dataType: 'string', notNull: true},
     server: {dataType: 'string'},
@@ -77,7 +78,22 @@ const duelTable = {
   }
 }
 
-const tdmTable = {}
+const tdmTable = {
+  name: 'Team DM',
+  columns: {
+    ...duelTable.columns,
+    team: [{
+      name: {dataType: 'string'},
+      score: {dataType: 'string'},
+      players: [
+        {
+          name: {dataType: 'string'},
+          guid: {dataType: 'string'},
+        }
+      ]
+    }]
+  }
+}
 
 
 class DB {
@@ -109,7 +125,7 @@ class DB {
   static async init() {
     const database = {
       name: 'app',
-      tables: [settingsTable, duelTable]
+      tables: [settingsTable, duelTable, tdmTable]
     }
 
     const isDbCreated = await connection.initDb(database);
@@ -132,6 +148,11 @@ class DB {
     return settings?.[0]
   }
 
+  static async getStatsPath() {
+    const settings = await DB.getSettings()
+    return settings?.statsPath
+  }
+
   static async updateStatsPath(newPath) {
     await connection.update({
       in: 'Settings',
@@ -139,6 +160,28 @@ class DB {
         statsPath: newPath
       }
     })
+  }
+
+  static async insertDuels(duels) {
+    const r = await connection.insert({
+      into: 'Duel',
+      values: [...duels]
+    })
+
+    if (r > 0) {
+      console.log(`inserted ${r} values`)
+    }
+  }
+
+  static async insertTdms(tdms) {
+    const r = await connection.insert({
+      into: 'Team DM',
+      values: [...tdms]
+    })
+
+    if (r > 0) {
+      console.log(`inserted ${r} values`)
+    }
   }
 }
 

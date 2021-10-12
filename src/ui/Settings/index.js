@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import DB from '../db'
+import Parser from "../../node/parsers/parser";
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -71,6 +72,7 @@ const Settings = () => {
       </StatsWrapper>
 
       <button onClick={updateSettings(initialSettings, settings)}>Update</button>
+      <button onClick={Parser.getAndUpdateMatchData}>load</button>
     </SettingsWrapper>
   )
 }

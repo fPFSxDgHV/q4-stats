@@ -1,33 +1,9 @@
-require('util').inspect.defaultOptions.depth = null
-const parser = require('fast-xml-parser')
-
-
-const fs = require('fs');
-const path = require('path');
-const jetpack = require('fs-jetpack')
-const getDuelData = require("./duel");
-
-// Return a list of files of the specified fileTypes in the provided dir,
-// with the file path relative to the given dir
-// dir: path of the directory you want to search the files for
-// fileTypes: array of file types you are search files, ex: ['.txt', '.jpg']
-async function getFilesFromDir(dir, fileTypes) {
-  const filesToReturn = [];
-  async function walkDir(currentPath) {
-    const files = await jetpack.listAsync(currentPath);
-    for (const i in files) {
-      const curFile = path.join(currentPath, files[i]);
-      if (fs.statSync(curFile).isFile()) {
-        filesToReturn.push(curFile.replace(dir, ''));
-      } else if (fs.statSync(curFile).isDirectory()) {
-        walkDir(curFile);
-      }
-    }
-  };
-  walkDir(dir);
-  return filesToReturn;
-}
-
+import parser from 'fast-xml-parser'
+import path from 'path'
+import jetpack from 'fs-jetpack'
+import getDuelData from "./duel"
+import getTdmData from "./tdm"
+import DB from "../../ui/db";
 
 class Parser {
   static parseXML(xml) {
@@ -80,6 +56,8 @@ class Parser {
     const rawData = Parser.parseXML(xml)
     if (rawData?.match?.type?.toLowerCase() === 'duel') {
       return getDuelData(rawData)
+    } else if (rawData?.match?.type?.toLowerCase() === 'team dm') {
+      return getTdmData(rawData)
     }
   }
 
@@ -88,6 +66,83 @@ class Parser {
 
     return await Promise.all(fileList.map(Parser.parseFile))
   }
+
+  static getPlayers(players) {
+    return players.map(player => ({
+      name: player?.name,
+      clan: player?.clan,
+      guid: player?.guid,
+      score: Parser.getStat(player?.stat, 'score'),
+      kills: Parser.getStat(player?.stat, 'kills'),
+      suicides: Parser.getStat(player?.stat, 'suicides'),
+      net: Parser.getStat(player?.stat, 'net'),
+      damageGiven: Parser.getStat(player?.stat, 'damagegiven'),
+      damageTaken: Parser.getStat(player?.stat, 'damagetaken'),
+      awards: Parser.getAwards(player?.awards?.award),
+      weapons: Parser.getWeapons(player?.weapons?.weapon)
+    }))
+  }
+
+  static getStat(statArray, stat) {
+    return statArray?.find(q => q?.name?.toLowerCase() === stat?.toLowerCase())?.value
+  }
+
+  static getAwards(awards) {
+    if (Array.isArray(awards)) {
+      return awards
+    } else {
+      return [awards]
+    }
+  }
+
+  static getWeapons(weapons) {
+    const updatedWeaponsObj = weapons.map(q => ({
+      [Parser.mapWeaponName(q.name)]: {
+        hits: q?.hits,
+        shots: q?.shots,
+        kills: q?.kills,
+      }
+    }))
+    const result = {}
+    updatedWeaponsObj.forEach(q => {
+      const gunName = Object.keys(q)?.[0]
+      result[gunName] = q[gunName]
+    })
+    return result
+  }
+
+  static mapWeaponName(name) {
+    const names = {
+      Machinegun: 'Machinegun',
+      Shotgun: 'Shotgun',
+      HyperBlaster: 'HyperBlaster',
+      'Grenade Launcher': 'GrenadeLauncher',
+      'Rocket Launcher': 'RocketLauncher',
+      Railgun: 'Railgun',
+      'Lightning Gun': 'LightningGun'
+    }
+
+    for (const nameInNames of Object.keys(names)) {
+      if (name === nameInNames) {
+        return names[nameInNames]
+      }
+    }
+  }
+
+  static async getAndUpdateMatchData() {
+    const statsPath = await DB.getStatsPath()
+    if (!statsPath) {
+      console.log('stats path is empty')
+      return
+    }
+    const data = await Parser.parseAllFiles(statsPath)
+    const duels = data.filter(q => q?.type?.toLowerCase() === "duel")
+    const tdms = data.filter(q => q?.type?.toLowerCase() === 'team dm')
+    console.log(duels,tdms)
+
+    await DB.insertDuels(duels)
+    await DB.insertTdms(tdms)
+  }
 }
 
-module.exports = Parser
+export default Parser

@@ -1,5 +1,4 @@
 const { app, BrowserWindow, session } = require('electron');
-console.log(BrowserWindow, session)
 const path = require('path');
 
 const initAppFolder = require('./node/appFolder')
@@ -17,6 +16,8 @@ const createWindow = () => {
     height: 1000,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
     }
   });
 

@@ -1,33 +1,53 @@
 import React from 'react'
-import { render } from 'react-dom'
+import {render} from 'react-dom'
 import styled from 'styled-components'
+import {Provider, useSelector} from 'react-redux'
 
-const HeaderWrapper = styled.div`
-  font-family: "Open_Sans";
-  font-weight: 400;
-  font-style: normal;
-  font-size: 36px;
+import Header from '../Header'
+import store from '../store'
+import Stats from "../Stats";
+import MatchHistory from "../MatchHistory";
+import Settings from "../Settings";
+
+const MainWidgetWrapper = styled.div`
+  margin-top: 40px;
 `
 
-const MainWrapper = styled.div`
-  font-family: "Roboto";
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
-
+const AppWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `
-
-const Header = () => <HeaderWrapper>The spectacle before us was indeed sublime. </HeaderWrapper>
 
 const App = () => (
-  <div>
-    <Header />
-    <MainWrapper>Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds. </MainWrapper>
-  </div>
+  <Provider store={store}>
+    <AppWrapper>
+      <Header/>
+      <MainWidget/>
+    </AppWrapper>
+  </Provider>
+
 )
 
+const MainWidget = () => {
+  const mainWidget = useSelector(state => state?.header?.mainWidget)
+
+  const widgets = {
+    'stats': <Stats/>,
+    'matchHistory': <MatchHistory/>,
+    'settings': <Settings/>
+  }
+
+  return (
+    <MainWidgetWrapper>
+      {widgets[mainWidget]}
+    </MainWidgetWrapper>
+  )
+}
+
 function runApp() {
-  render(<App />, document.getElementById('root'))
+  render(<App/>, document.getElementById('root'))
 }
 
 export default runApp

@@ -24,6 +24,7 @@
     "webpack-cli": "^4.9.0"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.2",
     "better-sqlite3": "7.4.0",
     "cors": "^2.8.5",
     "electron": "^15.1.2",

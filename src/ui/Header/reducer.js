@@ -8,7 +8,7 @@ export const headerSlice = createSlice({
   reducers: {
     changeMainWidget: (state, action) => {
       state.mainWidget = action.payload
-    }
+    },
   }
 })
 

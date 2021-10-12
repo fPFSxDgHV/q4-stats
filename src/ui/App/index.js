@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {render} from 'react-dom'
 import styled from 'styled-components'
 import {Provider, useSelector} from 'react-redux'
@@ -8,6 +8,9 @@ import store from '../store'
 import Stats from "../Stats";
 import MatchHistory from "../MatchHistory";
 import Settings from "../Settings";
+import DB from "../db";
+import {loadSettings} from "../Settings/reducer";
+import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
@@ -20,14 +23,33 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `
 
-const App = () => (
-  <Provider store={store}>
+const loadAllTables = async () => {
+  const settings = await DB.getSettings()
+  const duels = await DB.getDuels()
+  const tdms = await DB.getTdms()
+
+  loadSettings(settings)
+  loadDuels(duels)
+  loadTdm(tdms)
+}
+
+const _App = () => {
+  useEffect(() => {
+    loadAllTables()
+  })
+
+  return (
     <AppWrapper>
       <Header/>
       <MainWidget/>
     </AppWrapper>
-  </Provider>
+  )
+}
 
+const App = () => (
+  <Provider store={store}>
+    <_App />
+  </Provider>
 )
 
 const MainWidget = () => {

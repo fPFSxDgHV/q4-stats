@@ -183,6 +183,18 @@ class DB {
       console.log(`inserted ${r} values`)
     }
   }
+
+  static async getDuels() {
+    return await connection.select({
+      from: 'Duel'
+    })
+  }
+
+  static async getTdms() {
+    return await connection.select({
+      from: 'Team DM'
+    })
+  }
 }
 
 export default DB

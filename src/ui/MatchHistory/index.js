@@ -16,9 +16,7 @@ const sortMatches = (a, b) => {
 
   const aDaytime = mapDateTime(a?.datetime)
   const bDaytime = mapDateTime(b?.datetime)
-  console.log(new Date(aDaytime).getTime(), new Date(bDaytime).getTime())
-  // console.log(aDaytime, bDaytime, dayjs(aDaytime).isAfter(bDaytime))
-  return new Date(aDaytime).getTime() - new Date(bDaytime).getTime()
+  return  new Date(bDaytime).getTime() - new Date(aDaytime).getTime()
 }
 
 

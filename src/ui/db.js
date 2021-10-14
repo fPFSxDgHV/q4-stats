@@ -195,6 +195,15 @@ class DB {
       from: 'Team DM'
     })
   }
+
+  static async updateGuid(newGuid) {
+    await connection.update({
+      in: 'Settings',
+      set: {
+        guid: newGuid
+      }
+    })
+  }
 }
 
 export default DB

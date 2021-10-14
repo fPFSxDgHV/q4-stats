@@ -18,7 +18,6 @@ const StatsWrapper = styled.div`
 `
 
 const loadSettings = async (changeSettings, changeInitialSettings) => {
-  console.log('loadSettings')
   const settings = await DB.getSettings()
   changeSettings(settings)
   changeInitialSettings(settings)
@@ -33,12 +32,24 @@ const updateSettings = (initialSettings, settings) => async () => {
     }
   }
 
+  const updateGuid = async () => {
+    if (settings.guid !== initialSettings.guid) {
+      await DB.updateGuid(settings.guid)
+    }
+  }
+
   await updateStatsPath()
+  await updateGuid()
 }
 
 const handleStatsPathUpdate = (changeSettings, settings) => async e => {
   changeSettings({...settings, statsPath: e?.target?.value})
 }
+
+const handleGuidPathUpdate = (changeSettings, settings) => async e => {
+  changeSettings({...settings, guid: e?.target?.value})
+}
+
 
 const handleUpdateClick = (settings) => () => {
   console.log(settings)
@@ -67,7 +78,7 @@ const Settings = () => {
         <div>Language</div>
       </StatsWrapper>
       <StatsWrapper>
-        <input />
+        <input value={settings.guid} onChange={handleGuidPathUpdate(changeSettings, settings)} />
         <div>guid</div>
       </StatsWrapper>
 

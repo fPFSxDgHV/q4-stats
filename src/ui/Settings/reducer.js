@@ -9,7 +9,7 @@ export const settingsSlice = createSlice({
   },
   reducers: {
     loadSettings: (state, action) => {
-      state = action.payload
+      return action.payload
     },
   }
 })

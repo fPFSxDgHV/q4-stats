@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {render} from 'react-dom'
 import styled from 'styled-components'
-import {Provider, useSelector} from 'react-redux'
+import {Provider, useSelector, useDispatch} from 'react-redux'
 
 import Header from '../Header'
 import store from '../store'
@@ -23,19 +23,28 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `
 
-const loadAllTables = async () => {
+const loadAllTables = async (dispatch) => {
   const settings = await DB.getSettings()
   const duels = await DB.getDuels()
   const tdms = await DB.getTdms()
 
-  loadSettings(settings)
-  loadDuels(duels)
-  loadTdm(tdms)
+  const maps = duels.map(q => q.map)
+  const s = new Set()
+  for (const map of maps) {
+    s.add(map)
+  }
+  console.log(s)
+
+  dispatch(loadSettings(settings))
+  dispatch(loadDuels(duels))
+  dispatch(loadTdm(tdms))
 }
 
 const _App = () => {
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    loadAllTables()
+    loadAllTables(dispatch)
   })
 
   return (

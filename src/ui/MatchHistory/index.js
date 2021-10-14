@@ -1,15 +1,25 @@
 import React, { useState} from 'react'
 import {useSelector} from "react-redux";
-import styled from 'styled-components'
-import { maps, guids } from "../data";
 
 import SingleDuel from './SingleDuel'
+import dayjs from "dayjs";
 
+const mapDateTime = datetime => {
+  const [date, time] = datetime.split(' ')
+  const updatedDate = date.replaceAll('/', '-')
+  const updatedTime = time.replaceAll('-', ':')
 
+  return `${updatedDate} ${updatedTime}`
+}
 
+const sortMatches = (a, b) => {
 
-
-
+  const aDaytime = mapDateTime(a?.datetime)
+  const bDaytime = mapDateTime(b?.datetime)
+  console.log(new Date(aDaytime).getTime(), new Date(bDaytime).getTime())
+  // console.log(aDaytime, bDaytime, dayjs(aDaytime).isAfter(bDaytime))
+  return new Date(aDaytime).getTime() - new Date(bDaytime).getTime()
+}
 
 
 const MatchHistory = () => {
@@ -18,9 +28,12 @@ const MatchHistory = () => {
   const guid = useSelector(state => state?.settings?.guid)
 
   console.log(tdm, duel, guid)
+
+  const sortedMatches = [...duel].sort(sortMatches)
+  console.log(sortedMatches.map(q => q.datetime))
   return (
     <div>
-      {duel?.map(q => <SingleDuel matchData={q} guid={guid} />)}
+      {sortedMatches?.map(q => <SingleDuel key={q.matchId} matchData={q} guid={guid} />)}
     </div>
   )
 }

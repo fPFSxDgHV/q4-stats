@@ -11,6 +11,7 @@ import Settings from "../Settings";
 import DB from "../db";
 import {loadSettings} from "../Settings/reducer";
 import {loadDuels, loadTdm} from "../MatchHistory/reducer";
+import Match from '../Match'
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
@@ -67,7 +68,8 @@ const MainWidget = () => {
   const widgets = {
     'stats': <Stats/>,
     'matchHistory': <MatchHistory/>,
-    'settings': <Settings/>
+    'settings': <Settings/>,
+    'match': <Match />
   }
 
   return (

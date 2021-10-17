@@ -58,3 +58,13 @@ export const guids = {
   "RyKmV5Jf4So": "xtal",
   "Fh4xiyjJjTU": "Zilla"
 }
+
+export class DuelHelper {
+  static getPlayerName(matchData, guid) {
+    return matchData?.players?.find(q => q.guid === guid)?.name
+  }
+
+  static getEnemyPlayerName(matchData, guid) {
+    return matchData?.players?.find(q => q.guid !== guid)?.name
+  }
+}

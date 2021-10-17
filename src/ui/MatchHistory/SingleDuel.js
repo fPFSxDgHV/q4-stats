@@ -1,6 +1,8 @@
 import {guids, maps} from "../data";
 import React from "react";
 import styled from "styled-components";
+import {setMatch} from "../Header/reducer";
+import {useDispatch} from "react-redux";
 
 
 const ImgWrapper = styled.img`
@@ -17,7 +19,7 @@ const SingleMatchDataWrapper = styled.div`
   width: 100%;
 `
 
-const findMapImage = map => {
+export const findMapImage = map => {
   const regex = /mp\/(.*)\.map/
   const mapName = map?.match(regex)?.[1]
   const result = maps.find(q => q.name.includes(mapName))
@@ -50,16 +52,29 @@ const SingleDuelWrapper = styled.div`
   cursor: pointer;
 `
 
+const handleOpenMatchClick = (dispatch, matchId) => () => {
+  if (!matchId) {
+    return
+  }
+  dispatch(setMatch(matchId))
+}
+
+export const getPlayerData = (matchData, guid) => matchData?.players?.find(q => q.guid === guid)
+export const getEnemyData = (matchData, guid) => matchData?.players?.find(q => q.guid !== guid)
+
+
 const SingleDuel = ({ matchData, guid }) => {
-  const player = matchData?.players?.find(q => q.guid === guid)
-  const enemy = matchData?.players?.find(q => q.guid !== guid)
+  const dispatch = useDispatch()
+
+  const player = getPlayerData(matchData, guid)
+  const enemy = getEnemyData(matchData, guid)
   const areYouWinningSon = player.score > enemy.score
   const mapImage = findMapImage(matchData?.map)
   const mapSrc = `http://localhost:6007/images/maps/${mapImage}`
   const enemyName = guids[enemy.guid] || enemy?.name?.slice(0, 20)
   console.log(guids[enemy.guid])
   return (
-    <SingleDuelWrapper areYouWinningSon={areYouWinningSon}>
+    <SingleDuelWrapper areYouWinningSon={areYouWinningSon} onClick={handleOpenMatchClick(dispatch, matchData?.matchId)}>
       <LeftSquare areYouWinningSon={areYouWinningSon} />
       <SingleMatchDataWrapper>
         <AgainstWrapper>{`vs ${enemyName}`}</AgainstWrapper>

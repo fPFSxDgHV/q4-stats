@@ -250,11 +250,15 @@ const Match = () => {
   const matchData = duel?.matches?.find(q => q.matchId === matchId)
   const mapName = getMapName(matchData?.map)
 
+  const name = DuelHelper.getPlayerName(matchData, guid)
+  const name1 = DuelHelper.getEnemyPlayerName(matchData, guid)
+
+  console.log('names', name, name1)
   return (
     <MatchWrapper>
       <NamesWrapper>
-        <NameWrapper>{DuelHelper.getPlayerName(matchData, guid)}</NameWrapper>
-        <NameWrapper>{DuelHelper.getEnemyPlayerName(matchData, guid)}</NameWrapper>
+        <NameWrapper>{name}</NameWrapper>
+        <NameWrapper>{name1}</NameWrapper>
       </NamesWrapper>
       <DuelHeaderDataWrapper>
         <div>{'Duel'}</div>

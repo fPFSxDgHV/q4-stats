@@ -3,7 +3,15 @@ import { findMapImage, getPlayerData, getEnemyData } from '../MatchHistory/Singl
 import {useSelector} from "react-redux";
 import {DuelHelper, maps} from "../data";
 import { useTable } from 'react-table'
-import styled from 'styled-components'
+import DamageHelper from "./damage";
+
+import {
+  NamesWrapper,
+  NameWrapper,
+  MatchWrapper,
+  WeaponImg,
+  DuelHeaderDataWrapper
+} from './styles'
 
 const getMapName = (map) => {
   const regex = /mp\/(.*)\.map/
@@ -14,7 +22,6 @@ const getMapName = (map) => {
 const getHitsOverShots = (_hits, _shots) => {
   const hits = _hits ? _hits : 0
   const shots = _shots ? _shots : 0
-
 
   return `${hits}/${shots}`
 }
@@ -30,10 +37,6 @@ const getGunAcc = (_hits, _shots) => {
   return `${Math.round(hits / shots * 100)} %`
 }
 
-const WeaponImg = styled.img`
-  width: 24px;
-  height: 24px;
-`
 
 const getWeaponIcon = weaponName => {
   let src = ''
@@ -62,7 +65,7 @@ const getWeaponIcon = weaponName => {
 
 const getSingeWeaponData = (playerWeapons, enemyWeapons, weaponName) => {
   return {
-    hits1: getHitsOverShots(playerWeapons?.[weaponName]?.hits, playerWeapons?.[weaponName]?.shots),
+    hits1: DamageHelper.getHitsOverShots(playerWeapons?.[weaponName]?.hits, playerWeapons?.[weaponName]?.shots),
     acc1: getGunAcc(playerWeapons?.[weaponName]?.hits, playerWeapons?.[weaponName]?.shots),
     dmg1: calcWeaponDmg(playerWeapons?.[weaponName], weaponName, playerWeapons),
     score1: playerWeapons?.[weaponName]?.kills,
@@ -70,35 +73,9 @@ const getSingeWeaponData = (playerWeapons, enemyWeapons, weaponName) => {
     score2: enemyWeapons?.[weaponName]?.kills,
     dmg2: calcWeaponDmg(enemyWeapons?.[weaponName], weaponName, enemyWeapons),
     acc2: getGunAcc(enemyWeapons?.[weaponName]?.hits, enemyWeapons?.[weaponName]?.shots),
-    hits2: getHitsOverShots(enemyWeapons?.[weaponName]?.hits, enemyWeapons?.[weaponName]?.shots),
+    hits2: DamageHelper.getHitsOverShots(enemyWeapons?.[weaponName]?.hits, enemyWeapons?.[weaponName]?.shots),
   }
 }
-
-const calcRocketDmg = (playerWeapons) => {
-  let dmg = Number(playerWeapons.dmg)
-  console.log(dmg)
-  for (const [gunName, gunData] of Object.entries(playerWeapons)) {
-    if (gunName === 'dmg') {
-      continue
-    }
-    const hits = Number(gunData.hits)
-
-    if (gunName === 'Machinegun') {
-      dmg-= hits * 7
-    }
-    if (gunName === 'LightningGun') {
-      dmg-=  hits * 7
-    }
-    if (gunName === 'Railgun') {
-      dmg-= hits * 90
-    }
-
-    console.log(gunName, gunData)
-  }
-
-  return dmg
-}
-
 
 const calcWeaponDmg = (weaponData, weaponName, playerWeapons) => {
   const _hits = weaponData?.hits
@@ -108,7 +85,7 @@ const calcWeaponDmg = (weaponData, weaponName, playerWeapons) => {
   const hits = Number(_hits)
 
   if (weaponName === 'Machinegun') {
-    return hits * 7
+    return DamageHelper.calcMGdmg(hits)
   }
   if (weaponName === 'LightningGun') {
     return hits * 7
@@ -127,7 +104,7 @@ const calcWeaponDmg = (weaponData, weaponName, playerWeapons) => {
   }
 
   if (weaponName === 'RocketLauncher') {
-    return calcRocketDmg(playerWeapons)
+    return DamageHelper.calcRocketDmg(playerWeapons)
   }
 
   return 0
@@ -275,39 +252,25 @@ const Match = () => {
 
   return (
     <MatchWrapper>
-      <div>{'Duel'}</div>
-      <div>{matchData.matchId}</div>
-      <div>{mapName}</div>
-      <div>{'Moscow'}</div>
+      <NamesWrapper>
+        <NameWrapper>{DuelHelper.getPlayerName(matchData, guid)}</NameWrapper>
+        <NameWrapper>{DuelHelper.getEnemyPlayerName(matchData, guid)}</NameWrapper>
+      </NamesWrapper>
+      <DuelHeaderDataWrapper>
+        <div>{'Duel'}</div>
+        <div>{matchData.matchId}</div>
+        <div>{mapName}</div>
+        <div>{'Moscow'}</div>
+      </DuelHeaderDataWrapper>
+
       <div>
-        <NamesWrapper>
-          <NameWrapper>{DuelHelper.getPlayerName(matchData, guid)}</NameWrapper>
-          <SpaceBetweenNames></SpaceBetweenNames>
-          <div>{DuelHelper.getEnemyPlayerName(matchData, guid)}</div>
-        </NamesWrapper>
+
         <Table matchData={matchData} />
       </div>
     </MatchWrapper>
   )
 }
 
-const SpaceBetweenNames = styled.div`
-  width: 26px;
-`
 
-const NamesWrapper = styled.div`
-  display: flex;
-
-`
-
-const NameWrapper = styled.div`
-  display: flex;
-  justify-content: end;
-  width: 195px;
-`
-
-const MatchWrapper = styled.div`
-  font-family: Roboto;
-`
 
 export default Match

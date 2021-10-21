@@ -44,7 +44,7 @@ export const guids = {
   "SGhRblwHm34": "nickaero",
   "geQNGiRD4JA": "panikborke",
   "XXIF/r7vMEk": "reez",
-  "oBicWdaiqo": "Sanchez",
+  "obicwdai4q0": "Sanchez",
   "LGOAiEOWiEk": "Snowy",
   "L3YqPM82Hrk": "Shug",
   "GuNHHUhxDtw": "sTPHN",
@@ -60,11 +60,17 @@ export const guids = {
 }
 
 export class DuelHelper {
+  static clearRBGcolors(name) {
+    return name.replaceAll(/\^[Cc]*\d{1,3}/g, '')
+  }
+
   static getPlayerName(matchData, guid) {
-    return matchData?.players?.find(q => q.guid === guid)?.name
+    const name = matchData?.players?.find(q => q.guid === guid)?.name
+    return DuelHelper.clearRBGcolors(name)
   }
 
   static getEnemyPlayerName(matchData, guid) {
-    return matchData?.players?.find(q => q.guid !== guid)?.name
+    const name = matchData?.players?.find(q => q.guid !== guid)?.name
+    return DuelHelper.clearRBGcolors(name)
   }
 }

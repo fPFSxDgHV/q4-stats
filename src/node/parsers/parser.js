@@ -139,9 +139,30 @@ class Parser {
     const duels = data.filter(q => q?.type?.toLowerCase() === "duel")
     const tdms = data.filter(q => q?.type?.toLowerCase() === 'team dm')
     console.log(duels,tdms)
+    Parser.findGuid(tdms)
 
     await DB.insertDuels(duels)
     await DB.insertTdms(tdms)
+  }
+
+  static findGuid(tdms) {
+    const m = new Map()
+    tdms.forEach(tdm => {
+      tdm.players.forEach(player => {
+        if (m.has(player.guid)) {
+          m.set(player.guid, m.get(player.guid) + 1)
+        } else {
+          m.set(player.guid, 0)
+        }
+      })
+    })
+
+    let str = ''
+    for(const [key, value] of m.entries()) {
+      console.log(`${key} - ${value}`)
+      str +=`${key} - ${value}\n`
+    }
+    console.log(str)
   }
 }
 

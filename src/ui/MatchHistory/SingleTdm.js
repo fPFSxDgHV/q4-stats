@@ -1,8 +1,8 @@
-import {MatchHelper, guids, maps} from "../data";
+import {guids, maps, MatchHelper} from "../data";
 import React from "react";
 import {setMatch} from "../Header/reducer";
 import {useDispatch} from "react-redux";
-import {AgainstWrapper, ResultsWrapper, SingleMatchDataWrapper, SingleMatchWrapper} from "./styles";
+import {SingleMatchDataWrapper, SingleMatchWrapper, TdmNamesWrapper} from "./styles";
 
 
 export const findMapImage = map => {
@@ -23,8 +23,21 @@ const handleOpenMatchClick = (dispatch, matchId) => () => {
 export const getPlayerData = (matchData, guid) => matchData?.players?.find(q => q?.guid?.toLowerCase() === guid?.toLowerCase())
 export const getEnemyData = (matchData, guid) => matchData?.players?.find(q => q.guid?.toLowerCase() !== guid?.toLowerCase())
 
+const mapReducer = (acc, curr) => {
+  acc += `${MatchHelper.getNameFromGuids(curr.guid, curr.name)}, `
+  return acc
+}
 
-const SingleDuel = ({matchData, guid}) => {
+const SingleTDM = ({matchData, guid}) => {
+  const marine = matchData?.team?.find(q => q.name === 'Marine')
+  const strogg = matchData?.team?.find(q => q.name === 'Strogg')
+  const marineNames = marine?.players?.reduce(mapReducer, '').replace(/, $/, '')
+  const stroggNames = strogg?.players?.reduce(mapReducer, '').replace(/, $/, '')
+
+
+  console.log(marine, strogg)
+
+
   const dispatch = useDispatch()
 
   const _player = getPlayerData(matchData, guid)
@@ -33,22 +46,23 @@ const SingleDuel = ({matchData, guid}) => {
   const enemy = _player ? _enemy : matchData?.players?.[1]
 
   const areYouWinningSon = player.score > enemy.score
-  const mapImage = findMapImage(matchData?.map)
-  const mapSrc = `http://localhost:6007/images/maps/${mapImage}`
-  const enemyName = guids[enemy.guid] || MatchHelper.clearRBGcolors(enemy?.name?.slice(0, 20))
+  console.log(guids[enemy.guid])
   return (
     <SingleMatchWrapper areYouWinningSon={areYouWinningSon}
                         onClick={handleOpenMatchClick(dispatch, matchData?.matchId)}>
       <SingleMatchDataWrapper>
-        <div>{'Duel'}</div>
-        <AgainstWrapper>{`vs ${enemyName}`}</AgainstWrapper>
-        <ResultsWrapper areYouWinningSon={areYouWinningSon}>
-          <div>{areYouWinningSon ? 'Victory' : 'Defeat'}</div>
-          <div>{`${player?.score} : ${enemy?.score}`}</div>
-        </ResultsWrapper>
+        <div>{'TDM'}</div>
+        <TdmNamesWrapper>
+          <div>{marineNames}</div>
+          <div>{'vs'}</div>
+          <div>{stroggNames}</div>
+        </TdmNamesWrapper>
+        <div>
+          <div>{`${marine?.score} : ${strogg?.score}`}</div>
+        </div>
       </SingleMatchDataWrapper>
     </SingleMatchWrapper>
   )
 }
 
-export default SingleDuel
+export default SingleTDM

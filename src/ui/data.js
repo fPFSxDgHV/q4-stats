@@ -59,18 +59,34 @@ export const guids = {
   "Fh4xiyjJjTU": "Zilla"
 }
 
-export class DuelHelper {
+export class MatchHelper {
+  static getNameFromGuids(guid, name) {
+    if (guids[guid]) {
+      return guids[guid]
+    } else {
+      return MatchHelper.clearRBGcolors(name)
+    }
+  }
+
   static clearRBGcolors(name) {
     return name.replaceAll(/\^[Cc]*\d{1,3}/g, '')
   }
 
   static getPlayerName(matchData, guid) {
     const name = matchData?.players?.find(q => q.guid === guid)?.name
-    return DuelHelper.clearRBGcolors(name)
+    return MatchHelper.clearRBGcolors(name)
   }
 
   static getEnemyPlayerName(matchData, guid) {
     const name = matchData?.players?.find(q => q.guid !== guid)?.name
-    return DuelHelper.clearRBGcolors(name)
+    return MatchHelper.clearRBGcolors(name)
+  }
+  
+  static isDuelMatch(matchData) {
+    return matchData?.type === 'Duel'
+  }
+
+  static isTdmMatch(matchData) {
+    return matchData?.type === 'Team DM';
   }
 }

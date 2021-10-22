@@ -2,7 +2,8 @@ import React, { useState} from 'react'
 import {useSelector} from "react-redux";
 
 import SingleDuel from './SingleDuel'
-import dayjs from "dayjs";
+import SingleTDM from "./SingleTdm";
+import {MatchHelper} from "../data";
 
 const mapDateTime = datetime => {
   const [date, time] = datetime.split(' ')
@@ -19,19 +20,24 @@ const sortMatches = (a, b) => {
   return  new Date(bDaytime).getTime() - new Date(aDaytime).getTime()
 }
 
+const matchesMapper = guid => matchDetails => {
+  if (MatchHelper.isDuelMatch(matchDetails)) {
+    return <SingleDuel key={matchDetails.matchId} matchData={matchDetails} guid={guid} />
+  } else if (MatchHelper.isTdmMatch(matchDetails)) {
+    return <SingleTDM key={matchDetails.matchId} matchData={matchDetails} guid={guid} />
+  }
+}
+
 
 const MatchHistory = () => {
   const tdm = useSelector(state => state?.tdm?.matches)
   const duel = useSelector(state => state?.duel?.matches)
   const guid = useSelector(state => state?.settings?.guid)
 
-  console.log(tdm, duel, guid)
-
-  const sortedMatches = [...duel].sort(sortMatches)
-  console.log(sortedMatches.map(q => q.datetime))
+  const sortedMatches = [...duel, ...tdm].sort(sortMatches)
   return (
     <div>
-      {sortedMatches?.map(q => <SingleDuel key={q.matchId} matchData={q} guid={guid} />)}
+      {sortedMatches?.map(matchesMapper(guid))}
     </div>
   )
 }

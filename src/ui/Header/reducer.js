@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const headerSlice = createSlice({
   name: 'header',
   initialState: {
-    mainWidget: 'settings',
+    mainWidget: 'matchHistory',
     matchId: null
   },
   reducers: {

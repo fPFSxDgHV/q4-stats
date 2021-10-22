@@ -1,7 +1,7 @@
 import React from 'react'
 import { findMapImage, getPlayerData, getEnemyData } from '../MatchHistory/SingleDuel'
 import {useSelector} from "react-redux";
-import {DuelHelper, maps} from "../data";
+import {MatchHelper, maps} from "../data";
 import { useTable } from 'react-table'
 import DamageHelper from "./damage";
 
@@ -250,8 +250,8 @@ const Match = () => {
   const matchData = duel?.matches?.find(q => q.matchId === matchId)
   const mapName = getMapName(matchData?.map)
 
-  const name = DuelHelper.getPlayerName(matchData, guid)
-  const name1 = DuelHelper.getEnemyPlayerName(matchData, guid)
+  const name = MatchHelper.getPlayerName(matchData, guid)
+  const name1 = MatchHelper.getEnemyPlayerName(matchData, guid)
 
   console.log('names', name, name1)
   return (

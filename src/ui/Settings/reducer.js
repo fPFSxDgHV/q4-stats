@@ -6,14 +6,19 @@ export const settingsSlice = createSlice({
     statsPath: '',
     language: 'english',
     guid: '',
+    matchHistoryFilter: 'all'
   },
   reducers: {
     loadSettings: (state, action) => {
-      return action.payload
+      return {...state, ...action.payload}
     },
+    changeMatchHistoryFilter: (state, action) => {
+      console.log('changeMatchHistoryFilter', action)
+      return {...state, matchHistoryFilter: action.payload}
+    }
   }
 })
 
-export const { loadSettings } = settingsSlice.actions
+export const { loadSettings, changeMatchHistoryFilter } = settingsSlice.actions
 
 export default settingsSlice.reducer

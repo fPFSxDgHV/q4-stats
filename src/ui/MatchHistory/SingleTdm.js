@@ -34,10 +34,6 @@ const SingleTDM = ({matchData, guid}) => {
   const marineNames = marine?.players?.reduce(mapReducer, '').replace(/, $/, '')
   const stroggNames = strogg?.players?.reduce(mapReducer, '').replace(/, $/, '')
 
-
-  console.log(marine, strogg)
-
-
   const dispatch = useDispatch()
 
   const _player = getPlayerData(matchData, guid)
@@ -46,7 +42,6 @@ const SingleTDM = ({matchData, guid}) => {
   const enemy = _player ? _enemy : matchData?.players?.[1]
 
   const areYouWinningSon = player.score > enemy.score
-  console.log(guids[enemy.guid])
   return (
     <SingleMatchWrapper areYouWinningSon={areYouWinningSon}
                         onClick={handleOpenMatchClick(dispatch, matchData?.matchId)}>

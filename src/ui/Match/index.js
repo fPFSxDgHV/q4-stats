@@ -10,7 +10,8 @@ import {
   NameWrapper,
   MatchWrapper,
   WeaponImg,
-  DuelHeaderDataWrapper
+  DuelHeaderDataWrapper,
+  TdWrapper,
 } from './styles'
 
 const getMapName = (map) => {
@@ -38,7 +39,7 @@ const getGunAcc = (_hits, _shots) => {
 }
 
 
-const getWeaponIcon = weaponName => {
+const _getWeaponIcon = weaponName => {
   let src = ''
   if (weaponName === 'Railgun') {
     src = 'http://localhost:6007/images/icons/rail.jpg'
@@ -54,6 +55,31 @@ const getWeaponIcon = weaponName => {
     src = 'http://localhost:6007/images/icons/gl.png'
   } else if (weaponName === 'LightningGun') {
     src = 'http://localhost:6007/images/icons/lg.png'
+  }
+
+  if (!src) {
+    return <div>{`${weaponName} icon`}</div>
+  }
+
+  return <WeaponImg src={src} />
+}
+
+const getWeaponIcon = weaponName => {
+  let src = ''
+  if (weaponName === 'Railgun') {
+    src = 'http://localhost:6007/images/icons/guns/rail.png'
+  } else if (weaponName === 'RocketLauncher') {
+    src = 'http://localhost:6007/images/icons/guns/rocket.png'
+  } else if (weaponName === 'Machinegun') {
+    src = 'http://localhost:6007/images/icons/guns/mg.png'
+  } else if (weaponName === 'Shotgun') {
+    src = 'http://localhost:6007/images/icons/guns/shotgun.png'
+  } else if (weaponName === 'HyperBlaster') {
+    src = 'http://localhost:6007/images/icons/guns/plasma.png'
+  } else if (weaponName === 'GrenadeLauncher') {
+    src = 'http://localhost:6007/images/icons/guns/gl.png'
+  } else if (weaponName === 'LightningGun') {
+    src = 'http://localhost:6007/images/icons/guns/lg.png'
   }
 
   if (!src) {
@@ -227,11 +253,11 @@ const Table = ({ matchData }) => {
           <tr {...row.getRowProps()}>
             {row.cells.map(cell => {
               return (
-                <td
+                <TdWrapper
                   {...cell.getCellProps()}
                 >
                   {cell.render('Cell')}
-                </td>
+                </TdWrapper>
               )
             })}
           </tr>
@@ -266,11 +292,7 @@ const Match = () => {
         <div>{mapName}</div>
         <div>{'Moscow'}</div>
       </DuelHeaderDataWrapper>
-
-      <div>
-
-        <Table matchData={matchData} />
-      </div>
+      <Table matchData={matchData} />
     </MatchWrapper>
   )
 }

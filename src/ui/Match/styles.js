@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const NamesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 500px;
 `
 
 export const NameWrapper = styled.div`
@@ -14,6 +15,8 @@ export const NameWrapper = styled.div`
 
 export const MatchWrapper = styled.div`
   font-family: Roboto;
+  display: flex;
+  flex-direction: column;
 `
 
 
@@ -28,4 +31,8 @@ export const DuelHeaderDataWrapper = styled.div`
   margin-top: 25px;
   align-items: center;
   margin-bottom: 20px;
+  `
+
+export const TdWrapper = styled.td`
+  text-align: center;
   `

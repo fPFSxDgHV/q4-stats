@@ -90,3 +90,14 @@ export class MatchHelper {
     return matchData?.type === 'Team DM';
   }
 }
+
+export const servers = {
+  '68.232.163.17:28004': 'Central US',
+  '173.199.76.108:28004': 'United Kingdom',
+  '108.61.112.181:28004': 'Europe',
+  '176.36.131.100:28004': 'Ukraine',
+  '185.251.226.69:28004': 'United Kingdom',
+  '185.96.163.168:28004': 'Northern EU',
+  '66.55.137.189:28004': 'New Jersey',
+  '173.199.67.226:28004': 'Moscow',
+}

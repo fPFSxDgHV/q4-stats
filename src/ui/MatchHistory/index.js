@@ -6,7 +6,7 @@ import SingleTDM from "./SingleTdm";
 import {MatchHelper} from "../data";
 import {changeMatchHistoryFilter} from "../Settings/reducer";
 
-const mapDateTime = datetime => {
+export const mapDateTime = datetime => {
   const [date, time] = datetime.split(' ')
   const updatedDate = date.replaceAll('/', '-')
   const updatedTime = time.replaceAll('-', ':')

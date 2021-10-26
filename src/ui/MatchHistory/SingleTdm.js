@@ -4,15 +4,6 @@ import {setMatch} from "../Header/reducer";
 import {useDispatch} from "react-redux";
 import {SingleMatchDataWrapper, SingleMatchWrapper, TdmNamesWrapper} from "./styles";
 
-
-export const findMapImage = map => {
-  const regex = /mp\/(.*)\.map/
-  const mapName = map?.match(regex)?.[1]
-  const result = maps.find(q => q.name.includes(mapName))
-
-  return `${result?.image}`
-}
-
 const handleOpenMatchClick = (dispatch, matchId) => () => {
   if (!matchId) {
     return

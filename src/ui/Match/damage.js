@@ -55,6 +55,17 @@ class DamageHelper {
 
     return dmg
   }
+
+  static getGunAcc(_hits, _shots) {
+    if (_shots === 0 || _hits === undefined || _shots === undefined) {
+      return `0 %`
+    }
+
+    const hits = _hits ? _hits : 0
+    const shots = _shots ? _shots : 0
+
+    return `${Math.round(hits / shots * 100)} %`
+  }
 }
 
 export default DamageHelper

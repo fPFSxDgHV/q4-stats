@@ -21,12 +21,13 @@ const SingleStat = styled.div`
 
 const WidgetWrapper = styled.div`
   margin-top: 40px;
+  min-width: 350px;
 `
 
 const statsWidgets = {
   matches: <Matches />,
-  players: <div>Soon...</div>,
-  maps: <div>Also soon...</div>,
+  players: <div>Also soon...</div>,
+  maps: <div>Soon...</div>,
 }
 
 const Stats = () => {
@@ -36,8 +37,8 @@ const Stats = () => {
    <StatsWrapper>
      <HeaderWrapper>
        <SingleStat onClick={() => changeStat('matches')}>Matches</SingleStat>
-       <SingleStat onClick={() => changeStat('players')}>Players</SingleStat>
        <SingleStat onClick={() => changeStat('maps')}>Maps</SingleStat>
+       <SingleStat onClick={() => changeStat('players')}>Players</SingleStat>
      </HeaderWrapper>
 
      <WidgetWrapper>

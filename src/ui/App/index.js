@@ -25,7 +25,7 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `
 
-const loadAllTables = async (dispatch) => {
+export const loadAllTables = async (dispatch) => {
   const settings = await DB.getSettings()
   const duels = await DB.getDuels()
   const tdms = await DB.getTdms()

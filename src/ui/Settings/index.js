@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import DB from '../db'
 import Parser from "../../node/parsers/parser";
+import {loadAllTables} from "../App";
+import {useDispatch} from "react-redux";
 
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   font-family: Roboto;
 `
 
@@ -25,7 +27,7 @@ const loadSettings = async (changeSettings, changeInitialSettings) => {
 
 const updateSettings = (initialSettings, settings) => async () => {
   const updateStatsPath = async () => {
-    const statsPath = settings?.statsPath?.replace(/^\\\\\?\\/,"")?.replace(/\\/g,'\/')?.replace(/\/\/+/g,'\/')
+    const statsPath = settings?.statsPath?.replace(/^\\\\\?\\/, "")?.replace(/\\/g, '\/')?.replace(/\/\/+/g, '\/')
     if (statsPath !== initialSettings.statsPath) {
       console.log(statsPath, initialSettings.statsPath)
       await DB.updateStatsPath(statsPath)
@@ -50,12 +52,20 @@ const handleGuidPathUpdate = (changeSettings, settings) => async e => {
   changeSettings({...settings, guid: e?.target?.value})
 }
 
+const handleClearDBClick = (changeSettings, changeInitialSettings) => async () => {
+  await DB.clearDB()
+  await DB.initSettings()
+  await loadSettings(changeSettings, changeInitialSettings)
+}
 
-const handleUpdateClick = (settings) => () => {
-  console.log(settings)
+const handleLoadDataClick = (dispatch, changeSettings, changeInitialSettings) => async () => {
+  await Parser.getAndUpdateMatchData()
+  await loadAllTables(dispatch)
+  loadSettings(changeSettings, changeInitialSettings)
 }
 
 const Settings = () => {
+  const dispatch = useDispatch()
   const [settings, changeSettings] = useState({})
   const [initialSettings, changeInitialSettings] = useState({})
   console.log(settings)
@@ -78,12 +88,14 @@ const Settings = () => {
         <div>Language</div>
       </StatsWrapper>
       <StatsWrapper>
-        <input value={settings.guid} onChange={handleGuidPathUpdate(changeSettings, settings)} />
+        <input value={settings.guid} onChange={handleGuidPathUpdate(changeSettings, settings)}/>
         <div>guid</div>
       </StatsWrapper>
 
-      <button onClick={updateSettings(initialSettings, settings)}>Update</button>
-      <button onClick={Parser.getAndUpdateMatchData}>load</button>
+      <button onClick={updateSettings(initialSettings, settings)}>Update Settings</button>
+      <button onClick={handleLoadDataClick(dispatch, changeSettings, changeInitialSettings)}>Load Data</button>
+      <button onClick={handleClearDBClick(changeSettings, changeInitialSettings)}>Clear DB
+      </button>
     </SettingsWrapper>
   )
 }

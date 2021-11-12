@@ -98,18 +98,18 @@ const tdmTable = {
 const duelMatchesStats = {
   name: 'DuelStats',
   columns: {
-    played: { dataType: 'number'},
-    wins: { dataType: 'number'},
-    loses: { dataType: 'number'},
+    played: {dataType: 'number'},
+    wins: {dataType: 'number'},
+    loses: {dataType: 'number'},
   }
 }
 
 const tdmMatchesStats = {
   name: 'TdmStats',
   columns: {
-    played: { dataType: 'number'},
-    wins: { dataType: 'number'},
-    loses: { dataType: 'number'},
+    played: {dataType: 'number'},
+    wins: {dataType: 'number'},
+    loses: {dataType: 'number'},
   }
 }
 
@@ -129,7 +129,7 @@ class DB {
     })
   }
 
-  static async addOverallStats({ duels, tdms }) {
+  static async addOverallStats({duels, tdms}) {
     await DB.addDuelStats(duels)
     await DB.addTdmStats(tdms)
   }
@@ -180,7 +180,7 @@ class DB {
 
   static async getSettings() {
     const settings = await connection.select({
-      from: 'Settings'
+      from: settingsTable.name
     })
 
     return settings?.[0]
@@ -200,10 +200,25 @@ class DB {
     })
   }
 
+  /*
+   * filter out matches that already in db
+   * @param {Array} duels
+   * @param {string} type - type of filter(duel or tdm)
+   */
+  static async filterMatches(matches, type = 'duel') {
+    const matchesInDb = type === 'duel' ? await DB.getDuels() : await DB.getTdms()
+    const idOfMatchesInDB = matchesInDb.map(q => q?.matchId).map(q => q)
+    return matches.filter(q => !idOfMatchesInDB.some(idInDb => q.matchId === idInDb))
+  }
+
   static async insertDuels(duels) {
+    const filteredDuels = await DB.filterMatches(duels, 'duel')
+    if (filteredDuels.length === 0) {
+      return
+    }
     const r = await connection.insert({
-      into: 'Duel',
-      values: [...duels]
+      into: duelTable.name,
+      values: [...filteredDuels]
     })
 
     if (r > 0) {
@@ -212,9 +227,10 @@ class DB {
   }
 
   static async insertTdms(tdms) {
+    const filteredDuels = await DB.filterMatches(tdms, 'tdm')
     const r = await connection.insert({
-      into: 'Team DM',
-      values: [...tdms]
+      into: tdmTable.name,
+      values: [...filteredDuels]
     })
 
     if (r > 0) {
@@ -224,13 +240,13 @@ class DB {
 
   static async getDuels() {
     return await connection.select({
-      from: 'Duel'
+      from: duelTable.name
     })
   }
 
   static async getTdms() {
     return await connection.select({
-      from: 'Team DM'
+      from: tdmTable.name
     })
   }
 
@@ -248,11 +264,22 @@ class DB {
 
   static async updateGuid(newGuid) {
     await connection.update({
-      in: 'Settings',
+      in: settingsTable.name,
       set: {
         guid: newGuid
       }
     })
+  }
+
+  static async clearDB() {
+    try {
+      for (const table of [settingsTable, duelTable, tdmTable, duelMatchesStats, tdmMatchesStats]) {
+        await connection.clear(table.name)
+      }
+      console.log('db dropped')
+    } catch (e) {
+      console.log('failed to drop db')
+    }
   }
 }
 

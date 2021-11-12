@@ -126,7 +126,7 @@ const getTableData = (matchData, guid) => {
 export const MatchData = ({ matchData }) => {
   const mapName = getMapName(matchData?.map)
   const serverName = servers[matchData?.server]
-  const time = `${dayjs(mapDateTime(matchData?.datetime)).format('MMMM D H:m')}`
+  const time = `${dayjs(mapDateTime(matchData?.datetime)).format('MMMM D H:mm')}`
 
   return (
     <DuelHeaderDataWrapper>
@@ -142,15 +142,20 @@ export const MatchData = ({ matchData }) => {
 const Duel = ({ matchData }) => {
   const guid = useSelector(state => state?.settings?.guid)
 
-  const mapName = getMapName(matchData?.map)
   const name = MatchHelper.getPlayerName(matchData, guid)
   const name1 = MatchHelper.getEnemyPlayerName(matchData, guid)
+  const score = MatchHelper.getYourScore(matchData, guid)
+  const scor1 = MatchHelper.getEnemyScore(matchData, guid)
 
   return (
     <MatchWrapper>
       <NamesWrapper>
         <NameWrapper>{name}</NameWrapper>
         <NameWrapper>{name1}</NameWrapper>
+      </NamesWrapper>
+      <NamesWrapper>
+        <NameWrapper>{score}</NameWrapper>
+        <NameWrapper>{scor1}</NameWrapper>
       </NamesWrapper>
       <MatchData matchData={matchData} />
       <Table matchData={matchData} />

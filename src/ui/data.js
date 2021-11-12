@@ -60,6 +60,14 @@ export const guids = {
 }
 
 export class MatchHelper {
+  static getYourScore(matchData, guid) {
+    return matchData.players.find(player => player.guid === guid).score
+  }
+
+  static getEnemyScore(matchData, guid) {
+    return matchData.players.find(player => player.guid !== guid).score
+  }
+
   static getNameFromGuids(guid, name) {
     if (guids[guid]) {
       return guids[guid]
@@ -78,7 +86,12 @@ export class MatchHelper {
   }
 
   static getEnemyPlayerName(matchData, guid) {
-    const name = matchData?.players?.find(q => q.guid !== guid)?.name
+    const player = matchData?.players?.find(q => q.guid !== guid)
+    const playerGuid = player.guid
+    if (guids[playerGuid]) {
+      return guids[playerGuid]
+    }
+    const name = player?.name
     return MatchHelper.clearRBGcolors(name)
   }
   

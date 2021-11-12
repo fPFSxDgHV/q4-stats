@@ -67,3 +67,14 @@ body {
   padding: 0;
 }
 
+body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #192638;
+  border-radius: 3px;
+}
+
+

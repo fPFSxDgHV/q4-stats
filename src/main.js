@@ -18,13 +18,18 @@ const createWindow = () => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+    },
+
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#192638',
+      symbolColor: '#ffffff'
     }
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL(path.join(__dirname,'index.html'));
   // mainWindow.removeMenu()
-  // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
 

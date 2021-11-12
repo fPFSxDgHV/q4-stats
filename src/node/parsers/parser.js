@@ -4,6 +4,7 @@ import jetpack from 'fs-jetpack'
 import getDuelData from "./duel"
 import getTdmData from "./tdm"
 import DB from "../../ui/db";
+import {MatchHelper} from "../../ui/data";
 
 class Parser {
   static parseXML(xml) {
@@ -138,17 +139,21 @@ class Parser {
     const data = await Parser.parseAllFiles(statsPath)
     const duels = data.filter(q => q?.type?.toLowerCase() === "duel")
     const tdms = data.filter(q => q?.type?.toLowerCase() === 'team dm')
-    console.log(duels,tdms)
-    Parser.findGuid(tdms)
+
+    const guid = Parser.findGuid(duels)
+    await DB.updateGuid(guid)
+    const stats = Parser.getOverallStats(duels, tdms, guid)
+    await DB.addOverallStats(stats)
 
     await DB.insertDuels(duels)
     await DB.insertTdms(tdms)
+
   }
 
-  static findGuid(tdms) {
+  static findGuid(duels) {
     const m = new Map()
-    tdms.forEach(tdm => {
-      tdm.players.forEach(player => {
+    duels.forEach(duel => {
+      duel.players.forEach(player => {
         if (m.has(player.guid)) {
           m.set(player.guid, m.get(player.guid) + 1)
         } else {
@@ -156,13 +161,65 @@ class Parser {
         }
       })
     })
-
-    let str = ''
-    for(const [key, value] of m.entries()) {
-      console.log(`${key} - ${value}`)
-      str +=`${key} - ${value}\n`
+    const printGuids = () => {
+      let str = ''
+      for(const [key, value] of m.entries()) {
+        console.log(`${key} - ${value}`)
+        str +=`${key} - ${value}\n`
+      }
+      console.log(str)
     }
-    console.log(str)
+    let result = ''
+    let score = 0
+    for (const [key, value] of m) {
+      if (value > score) {
+        score = value
+        result = key
+      }
+    }
+    return result
+  }
+
+  static getOverallStats(duels, tdms, guid) {
+    const duelStats = {
+      played: 0,
+      wins: 0,
+      loses: 0,
+    }
+
+    const tdmStats = {
+      played: 0,
+      wins: 0,
+      loses: 0,
+    }
+
+    duels.forEach(duel => {
+      const isWin = MatchHelper.wasDuelWon(duel, guid)
+
+      duelStats.played++
+      if (isWin) {
+        duelStats.wins++
+      } else {
+        duelStats.loses++
+      }
+    })
+    tdms.forEach(tdm => {
+      const isWin = MatchHelper.wasTdmWon(tdm, guid)
+      if (isWin === null) {
+        return
+      }
+      tdmStats.played++
+      if (isWin) {
+        tdmStats.wins++
+      } else {
+        tdmStats.loses++
+      }
+    })
+
+    return {
+      duels: duelStats,
+      tdms: tdmStats
+    }
   }
 }
 

@@ -44,7 +44,7 @@ export const guids = {
   "SGhRblwHm34": "nickaero",
   "geQNGiRD4JA": "panikborke",
   "XXIF/r7vMEk": "reez",
-  "obicwdai4q0": "Sanchez",
+  "oBICWDAI4q0": "Sanchez",
   "LGOAiEOWiEk": "Snowy",
   "L3YqPM82Hrk": "Shug",
   "GuNHHUhxDtw": "sTPHN",
@@ -61,11 +61,11 @@ export const guids = {
 
 export class MatchHelper {
   static getYourScore(matchData, guid) {
-    return matchData.players.find(player => player.guid === guid).score
+    return matchData.players.find(player => player.guid === guid)?.score
   }
 
   static getEnemyScore(matchData, guid) {
-    return matchData.players.find(player => player.guid !== guid).score
+    return matchData.players.find(player => player.guid !== guid)?.score
   }
 
   static getNameFromGuids(guid, name) {
@@ -101,6 +101,28 @@ export class MatchHelper {
 
   static isTdmMatch(matchData) {
     return matchData?.type === 'Team DM';
+  }
+
+  static wasDuelWon(matchData, guid) {
+    return Number(MatchHelper.getYourScore(matchData, guid)) > Number(MatchHelper.getEnemyScore(matchData, guid))
+  }
+
+  static wasTdmWon(matchData, guid) {
+    const team = matchData.team.reduce((acc, curr) => {
+      curr.player.forEach(player => {
+        if (player.guid === guid) {
+          acc = curr.name
+        }
+      })
+      return acc
+    }, '')
+    const teamScore = matchData.team.find(q => q.name === team)?.score
+    const enemyScore = matchData.team.find(q => q.name !== team)?.score
+
+    if (teamScore === undefined || enemyScore === undefined) {
+      return null
+    }
+    return teamScore > enemyScore
   }
 }
 

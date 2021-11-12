@@ -1,15 +1,49 @@
-import React from 'react'
+import React, {useState} from 'react'
+import styled from 'styled-components'
+import Matches from "./Matches";
+
+const HeaderWrapper = styled.div`
+  font-family: Open_Sans;
+  display: flex;
+  flex-direction: row;
+  font-size: 19px;
+`
+
+const StatsWrapper = styled.div`
+  font-family: Roboto;
+  font-size: 14px;
+`
+
+const SingleStat = styled.div`
+  cursor: pointer;
+  margin-right: 10px;
+`
+
+const WidgetWrapper = styled.div`
+  margin-top: 40px;
+`
+
+const statsWidgets = {
+  matches: <Matches />,
+  players: <div>Soon...</div>,
+  maps: <div>Also soon...</div>,
+}
 
 const Stats = () => {
+  const [stat, changeStat] = useState('matches')
+
  return (
-   <div>
-     Stats
-     <div>
-       <div>Overall</div>
-       <div>Players</div>
-       <div>Maps</div>
-     </div>
-   </div>
+   <StatsWrapper>
+     <HeaderWrapper>
+       <SingleStat onClick={() => changeStat('matches')}>Matches</SingleStat>
+       <SingleStat onClick={() => changeStat('players')}>Players</SingleStat>
+       <SingleStat onClick={() => changeStat('maps')}>Maps</SingleStat>
+     </HeaderWrapper>
+
+     <WidgetWrapper>
+       {statsWidgets[stat]}
+     </WidgetWrapper>
+   </StatsWrapper>
  )
 }
 

@@ -4,6 +4,7 @@ import settings from './Settings/reducer'
 import logger from 'redux-logger'
 
 import { duelReducer, tdmReducer} from "./MatchHistory/reducer";
+import statsSlice from "./Stats/reducer";
 
 
 export default configureStore({
@@ -12,6 +13,7 @@ export default configureStore({
     settings,
     duel: duelReducer,
     tdm: tdmReducer,
+    stats: statsSlice
   },
   middleware: [
     logger,

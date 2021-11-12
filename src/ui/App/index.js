@@ -12,6 +12,7 @@ import DB from "../db";
 import {loadSettings} from "../Settings/reducer";
 import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 import Match from '../Match'
+import {loadDuelStats, loadTdmStats} from "../Stats/reducer";
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
@@ -28,17 +29,20 @@ const loadAllTables = async (dispatch) => {
   const settings = await DB.getSettings()
   const duels = await DB.getDuels()
   const tdms = await DB.getTdms()
+  const duelStats = await DB.getDuelStats()
+  const tdmStats = await DB.getTdmStats()
 
   const maps = duels.map(q => q.map)
   const s = new Set()
   for (const map of maps) {
     s.add(map)
   }
-  console.log(s)
 
   dispatch(loadSettings(settings))
   dispatch(loadDuels(duels))
   dispatch(loadTdm(tdms))
+  dispatch(loadDuelStats(duelStats?.[0]))
+  dispatch(loadTdmStats(tdmStats?.[0]))
 }
 
 const _App = () => {

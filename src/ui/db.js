@@ -96,7 +96,7 @@ const tdmTable = {
 }
 
 const duelMatchesStats = {
-  name: 'DuelMatches',
+  name: 'DuelStats',
   columns: {
     played: { dataType: 'number'},
     wins: { dataType: 'number'},
@@ -105,7 +105,7 @@ const duelMatchesStats = {
 }
 
 const tdmMatchesStats = {
-  name: 'TdmMatches',
+  name: 'TdmStats',
   columns: {
     played: { dataType: 'number'},
     wins: { dataType: 'number'},
@@ -117,14 +117,14 @@ const tdmMatchesStats = {
 class DB {
   static async addDuelStats(stats) {
     const numberOfRowsInserted = await connection.insert({
-      into: 'DuelMatches',
+      into: duelMatchesStats.name,
       values: [stats]
     })
   }
 
   static async addTdmStats(stats) {
     const numberOfRowsInserted = await connection.insert({
-      into: 'TdmMatches',
+      into: tdmMatchesStats.name,
       values: [stats]
     })
   }
@@ -231,6 +231,18 @@ class DB {
   static async getTdms() {
     return await connection.select({
       from: 'Team DM'
+    })
+  }
+
+  static async getDuelStats() {
+    return await connection.select({
+      from: duelMatchesStats.name
+    })
+  }
+
+  static async getTdmStats() {
+    return await connection.select({
+      from: tdmMatchesStats.name
     })
   }
 

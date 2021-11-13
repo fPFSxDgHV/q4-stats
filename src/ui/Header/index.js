@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useDispatch, useSelector} from 'react-redux'
-import {changeMainWidget} from "./reducer";
+import {changeMainWidget} from "../Settings/reducer";
+import DB from "../db";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -36,18 +37,23 @@ const HeaderOption = styled.div`
   -webkit-app-region: no-drag;
 `
 
+const changeWidget = async (newWidget, dispatch) => {
+  await DB.updateMainWidget(newWidget)
+  dispatch(changeMainWidget(newWidget))
+}
+
 const Header = () => {
   const dispatch = useDispatch()
-  const mainWidget = useSelector(state => state?.header?.mainWidget)
+  const mainWidget = useSelector(state => state?.settings?.mainWidget)
 
   return (
     <HeaderWrapper>
       <HeaderOption isSelected={mainWidget === 'stats'}
-                    onClick={() => dispatch(changeMainWidget('stats'))}>Stats</HeaderOption>
+                    onClick={() => changeWidget('stats', dispatch)}>Stats</HeaderOption>
       <HeaderOption isSelected={mainWidget === 'matchHistory'}
-                    onClick={() => dispatch(changeMainWidget('matchHistory'))}>Match history</HeaderOption>
+                    onClick={() => changeWidget('matchHistory', dispatch)}>Match history</HeaderOption>
       <HeaderOption isSelected={mainWidget === 'settings'}
-                    onClick={() => dispatch(changeMainWidget('settings'))}>Settings</HeaderOption>
+                    onClick={() => changeWidget('settings', dispatch)}>Settings</HeaderOption>
     </HeaderWrapper>
   )
 }

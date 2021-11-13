@@ -68,7 +68,7 @@ const App = () => (
 )
 
 const MainWidget = () => {
-  const mainWidget = useSelector(state => state?.header?.mainWidget)
+  const mainWidget = useSelector(state => state?.settings?.mainWidget)
 
   const widgets = {
     'stats': <Stats/>,

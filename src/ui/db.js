@@ -6,7 +6,8 @@ const settingsTable = {
     id: {primaryKey: true, autoIncrement: true},
     statsPath: {dataType: 'string'},
     language: {dataType: 'string', default: 'english', notNull: true},
-    guid: {dataType: 'string'}
+    guid: {dataType: 'string'},
+    mainWidget: { dataType: 'string' }
   }
 }
 
@@ -152,7 +153,8 @@ class DB {
         values: [{
           statsPath: '',
           language: 'english',
-          guid: ''
+          guid: '',
+          mainWidget: 'settings'
         }]
       })
 
@@ -196,6 +198,15 @@ class DB {
       in: 'Settings',
       set: {
         statsPath: newPath
+      }
+    })
+  }
+
+  static async updateMainWidget(newWidget) {
+    await connection.update({
+      in: 'Settings',
+      set: {
+        mainWidget: newWidget
       }
     })
   }

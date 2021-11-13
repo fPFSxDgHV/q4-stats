@@ -7,9 +7,7 @@ export const headerSlice = createSlice({
     matchId: null
   },
   reducers: {
-    changeMainWidget: (state, action) => {
-      state.mainWidget = action.payload
-    },
+
     setMatch: (state, action) => {
       return {
         mainWidget: 'match',

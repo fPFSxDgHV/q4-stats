@@ -17,6 +17,6 @@ export const headerSlice = createSlice({
   }
 })
 
-export const { changeMainWidget, setMatch } = headerSlice.actions
+export const { setMatch } = headerSlice.actions
 
 export default headerSlice.reducer

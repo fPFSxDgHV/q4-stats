@@ -1,7 +1,7 @@
 {
   "name": "q4-stats",
   "productName": "q4-stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quake 4 stats app",
   "private": true,
   "author": "tgr",
@@ -52,7 +52,8 @@
     "start:webpack": "webpack",
     "start:app": "electron ./dist1/electron.js --trace-warnings",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --project \"./dist1\""
+    "dist": "electron-builder --project \"./dist1\"",
+    "prepare:build": "yarn start:webpack && cd dist1/ && yarn && yarn dist"
   },
   "build": {
     "appId": "com.electron.q4.stats",

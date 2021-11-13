@@ -3,12 +3,15 @@ import React from "react";
 import {setMatch} from "../Header/reducer";
 import {useDispatch} from "react-redux";
 import {SingleMatchDataWrapper, SingleMatchWrapper, TdmNamesWrapper} from "./styles";
+import {changeMainWidget} from "../Settings/reducer";
 
 const handleOpenMatchClick = (dispatch, matchId) => () => {
   if (!matchId) {
     return
   }
   dispatch(setMatch(matchId))
+  dispatch(changeMainWidget('match'))
+
 }
 
 export const getPlayerData = (matchData, guid) => matchData?.players?.find(q => q?.guid?.toLowerCase() === guid?.toLowerCase())

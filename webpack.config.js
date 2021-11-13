@@ -8,7 +8,8 @@ const copyPlugins = assets.map(asset => {
   return new CopyWebpackPlugin({
     patterns: [
       { from: path.resolve( __dirname, 'src', asset), to: asset},
-      { from: path.resolve(__dirname, 'src', 'index.html')}
+      { from: path.resolve(__dirname, 'src', 'index.html') },
+      { from: path.resolve(__dirname, 'src', 'static', 'package.json')}
     ]
   });
 });

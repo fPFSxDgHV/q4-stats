@@ -1,8 +1,9 @@
 import {MatchHelper, guids, maps} from "../data";
 import React from "react";
-import {setMatch} from "../Header/reducer";
+import { setMatch} from "../Header/reducer";
 import {useDispatch} from "react-redux";
 import {AgainstWrapper, ResultsWrapper, SingleMatchDataWrapper, SingleMatchWrapper} from "./styles";
+import {changeMainWidget} from "../Settings/reducer";
 
 
 export const findMapImage = map => {
@@ -18,6 +19,7 @@ const handleOpenMatchClick = (dispatch, matchId) => () => {
     return
   }
   dispatch(setMatch(matchId))
+  dispatch(changeMainWidget('match'))
 }
 
 export const getPlayerData = (matchData, guid) => matchData?.players?.find(q => q?.guid?.toLowerCase() === guid?.toLowerCase())

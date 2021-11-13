@@ -29,8 +29,8 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(path.join(__dirname,'index.html'));
-  mainWindow.removeMenu()
-  // mainWindow.webContents.openDevTools();
+  // mainWindow.removeMenu()
+  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished

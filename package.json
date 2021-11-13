@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Quake 4 stats app",
   "private": true,
+  "author": "tgr",
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
@@ -16,6 +17,8 @@
     "babel-polyfill": "^6.26.0",
     "copy-webpack-plugin": "6",
     "css-loader": "^3.0.0",
+    "electron": "^15.3.1",
+    "electron-builder": "^22.13.1",
     "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",
     "node-loader": "^0.6.0",
@@ -29,7 +32,6 @@
     "chokidar": "^3.5.2",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",
-    "electron": "^15.1.2",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.20.3",
     "fs-jetpack": "^4.2.0",
@@ -48,6 +50,14 @@
   "scripts": {
     "start:webpack:watch": "webpack --watch",
     "start:webpack": "webpack",
-    "start:app": "electron ./dist/electron.js --trace-warnings"
+    "start:app": "electron ./dist1/electron.js --trace-warnings",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --project \"./dist1\""
+  },
+  "build": {
+    "appId": "com.electron.q4.stats",
+    "mac": {
+      "category": "your.app.category.type"
+    }
   }
 }

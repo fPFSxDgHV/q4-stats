@@ -3,6 +3,7 @@ const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const assets = ['static'];
+
 const copyPlugins = assets.map(asset => {
   return new CopyWebpackPlugin({
     patterns: [
@@ -14,12 +15,12 @@ const copyPlugins = assets.map(asset => {
 
 const uiConfig = {
   target: "electron11-renderer",
-  mode: 'development',
+  mode: 'production',
   entry: {
     ui: path.join(__dirname, 'src', 'renderer.js')
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist1'),
     filename: '[name].js',
   },
   module: {
@@ -57,14 +58,14 @@ const uiConfig = {
 }
 
 const serverConfig = {
-  mode: 'development',
+  mode: 'production',
   target: 'electron15.1-main',
   entry: {
     electron: path.join(__dirname, 'src', 'main.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist1'),
+    filename: 'index.js',
     globalObject: "this",
   },
 }

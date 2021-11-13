@@ -61,7 +61,7 @@ const handleClearDBClick = (changeSettings, changeInitialSettings) => async () =
 const handleLoadDataClick = (dispatch, changeSettings, changeInitialSettings) => async () => {
   await Parser.getAndUpdateMatchData()
   await loadAllTables(dispatch)
-  loadSettings(changeSettings, changeInitialSettings)
+  await loadSettings(changeSettings, changeInitialSettings)
 }
 
 const Settings = () => {

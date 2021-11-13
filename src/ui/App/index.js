@@ -13,6 +13,7 @@ import {loadSettings} from "../Settings/reducer";
 import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 import Match from '../Match'
 import {loadDuelStats, loadTdmStats} from "../Stats/reducer";
+import startWatcher from "../../node/pathWatcher";
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
@@ -83,8 +84,9 @@ const MainWidget = () => {
   )
 }
 
-function runApp() {
+async function runApp() {
   render(<App/>, document.getElementById('root'))
+  await startWatcher(store)
 }
 
 export default runApp

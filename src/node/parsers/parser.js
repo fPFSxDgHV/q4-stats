@@ -5,6 +5,7 @@ import getDuelData from "./duel"
 import getTdmData from "./tdm"
 import DB from "../../ui/db";
 import {MatchHelper} from "../../ui/data";
+import {MatchStats} from "./Stats";
 
 class Parser {
   static parseXML(xml) {
@@ -142,6 +143,7 @@ class Parser {
 
     const guid = Parser.findGuid(duels)
     await DB.updateGuid(guid)
+    await MatchStats.processData(duels, tdms, guid)
     const stats = Parser.getOverallStats(duels, tdms, guid)
     await DB.addOverallStats(stats)
 

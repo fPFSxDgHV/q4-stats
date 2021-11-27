@@ -12,7 +12,7 @@ import DB from "../db";
 import {loadSettings} from "../Settings/reducer";
 import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 import Match from '../Match'
-import {loadDuelStats, loadTdmStats} from "../Stats/reducer";
+import {loadDuelStats, loadMapStats, loadTdmStats} from "../Stats/reducer";
 import startWatcher from "../../node/pathWatcher";
 
 const MainWidgetWrapper = styled.div`
@@ -32,6 +32,7 @@ export const loadAllTables = async (dispatch) => {
   const tdms = await DB.getTdms()
   const duelStats = await DB.getDuelStats()
   const tdmStats = await DB.getTdmStats()
+  const matchStats = await DB.getMatchStats()
 
   const maps = duels.map(q => q.map)
   const s = new Set()
@@ -44,6 +45,7 @@ export const loadAllTables = async (dispatch) => {
   dispatch(loadTdm(tdms))
   dispatch(loadDuelStats(duelStats?.[0]))
   dispatch(loadTdmStats(tdmStats?.[0]))
+  dispatch(loadMapStats(matchStats))
 }
 
 const _App = () => {

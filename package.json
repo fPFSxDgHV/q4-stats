@@ -50,10 +50,11 @@
   "scripts": {
     "start:webpack:watch": "webpack --watch",
     "start:webpack": "webpack",
-    "start:app": "electron ./dist1/electron.js --trace-warnings",
+    "start:app": "electron ./dist1/index.js --trace-warnings",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --project \"./dist1\"",
-    "prepare:build": "yarn start:webpack && cd dist1/ && yarn && yarn dist"
+    "prepare:build": "yarn start:webpack && cd dist1/ && yarn && yarn dist",
+    "webpack:dev:watch": "webpack --progress --watch"
   },
   "build": {
     "appId": "com.electron.q4.stats",

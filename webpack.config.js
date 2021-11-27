@@ -2,21 +2,21 @@ const path = require('path')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const assets = ['static'];
+const assets = ['static']
 
 const copyPlugins = assets.map(asset => {
   return new CopyWebpackPlugin({
     patterns: [
-      { from: path.resolve( __dirname, 'src', asset), to: asset},
-      { from: path.resolve(__dirname, 'src', 'index.html') },
-      { from: path.resolve(__dirname, 'src', 'static', 'package.json')}
+      {from: path.resolve(__dirname, 'src', asset), to: asset},
+      {from: path.resolve(__dirname, 'src', 'index.html')},
+      {from: path.resolve(__dirname, 'src', 'static', 'package.json')}
     ]
   });
-});
+})
 
-const uiConfig = {
+const uiConfig = ({production}) => ({
   target: "electron11-renderer",
-  mode: 'production',
+  mode: production ? 'production' : 'development',
   entry: {
     ui: path.join(__dirname, 'src', 'renderer.js')
   },
@@ -56,10 +56,10 @@ const uiConfig = {
   plugins: [
     ...copyPlugins
   ]
-}
+})
 
-const serverConfig = {
-  mode: 'production',
+const serverConfig = ({production}) => ({
+  mode: production ? 'production' : 'development',
   target: 'electron15.1-main',
   entry: {
     electron: path.join(__dirname, 'src', 'main.js'),
@@ -69,6 +69,6 @@ const serverConfig = {
     filename: 'index.js',
     globalObject: "this",
   },
-}
+})
 
 module.exports = [uiConfig, serverConfig]

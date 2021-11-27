@@ -60,6 +60,12 @@ export const guids = {
 }
 
 export class MatchHelper {
+  static getMapName(map) {
+    const regex = /mp\/(.*)\.map/
+    const mapName = map?.match(regex)?.[1]
+    return maps?.find(q => q?.name?.includes(mapName))?.sName || map?.match(/\/([0-9a-zA-Z_]+)\.map/)?.[1] || map
+  }
+
   static getYourScore(matchData, guid) {
     return matchData.players.find(player => player.guid === guid)?.score
   }
@@ -94,7 +100,7 @@ export class MatchHelper {
     const name = player?.name
     return MatchHelper.clearRBGcolors(name)
   }
-  
+
   static isDuelMatch(matchData) {
     return matchData?.type === 'Duel'
   }

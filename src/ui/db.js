@@ -7,7 +7,7 @@ const settingsTable = {
     statsPath: {dataType: 'string'},
     language: {dataType: 'string', default: 'english', notNull: true},
     guid: {dataType: 'string'},
-    mainWidget: { dataType: 'string' }
+    mainWidget: {dataType: 'string'}
   }
 }
 
@@ -114,8 +114,23 @@ const tdmMatchesStats = {
   }
 }
 
+const matchHistoryStats = {
+  name: 'MatchHistoryStats',
+  columns: {
+    mapName: {dataType: 'string'},
+    wins: {dataType: 'number'},
+  }
+}
+
 
 class DB {
+  static async addMatchStats(stats) {
+    const numberOfRowsInserted = await connection.insert({
+      into: matchHistoryStats.name,
+      values: stats
+    })
+  }
+
   static async addDuelStats(stats) {
     const numberOfRowsInserted = await connection.insert({
       into: duelMatchesStats.name,
@@ -164,7 +179,7 @@ class DB {
   static async init() {
     const database = {
       name: 'app',
-      tables: [settingsTable, duelTable, tdmTable, duelMatchesStats, tdmMatchesStats],
+      tables: [settingsTable, duelTable, tdmTable, duelMatchesStats, tdmMatchesStats, matchHistoryStats],
       version: 2,
     }
 
@@ -270,6 +285,12 @@ class DB {
   static async getTdmStats() {
     return await connection.select({
       from: tdmMatchesStats.name
+    })
+  }
+
+  static async getMatchStats() {
+    return await connection.select({
+      from: matchHistoryStats.name
     })
   }
 

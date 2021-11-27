@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import Matches from "./Matches";
+import Maps from "./Maps";
 
 const HeaderWrapper = styled.div`
   font-family: Open_Sans;
@@ -27,7 +28,7 @@ const WidgetWrapper = styled.div`
 const statsWidgets = {
   matches: <Matches />,
   players: <div>Also soon...</div>,
-  maps: <div>Soon...</div>,
+  maps: <Maps />,
 }
 
 const Stats = () => {

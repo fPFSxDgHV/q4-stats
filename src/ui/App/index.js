@@ -14,6 +14,7 @@ import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 import Match from '../Match'
 import {loadDuelStats, loadMapStats, loadTdmStats} from "../Stats/reducer";
 import startWatcher from "../../node/pathWatcher";
+import Play from "../Play";
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
@@ -76,7 +77,8 @@ const MainWidget = () => {
     'stats': <Stats/>,
     'matchHistory': <MatchHistory/>,
     'settings': <Settings/>,
-    'match': <Match />
+    'match': <Match />,
+    'play': <Play />
   }
 
   return (

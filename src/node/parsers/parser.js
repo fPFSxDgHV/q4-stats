@@ -134,7 +134,6 @@ class Parser {
   static async getAndUpdateMatchData() {
     const statsPath = await DB.getStatsPath()
     if (!statsPath) {
-      console.log('stats path is empty')
       return
     }
     const data = await Parser.parseAllFiles(statsPath)

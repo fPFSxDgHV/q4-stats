@@ -29,7 +29,6 @@ const updateSettings = (initialSettings, settings) => async () => {
   const updateStatsPath = async () => {
     const statsPath = settings?.statsPath?.replace(/^\\\\\?\\/, "")?.replace(/\\/g, '\/')?.replace(/\/\/+/g, '\/')
     if (statsPath !== initialSettings.statsPath) {
-      console.log(statsPath, initialSettings.statsPath)
       await DB.updateStatsPath(statsPath)
     }
   }
@@ -68,7 +67,6 @@ const Settings = () => {
   const dispatch = useDispatch()
   const [settings, changeSettings] = useState({})
   const [initialSettings, changeInitialSettings] = useState({})
-  console.log(settings)
   useEffect(() => {
     loadSettings(changeSettings, changeInitialSettings)
   }, [])

@@ -6,7 +6,6 @@ const cors = require('cors')
 function initServer() {
   try {
     const dirToWatch = path.join(__dirname, 'static')
-    console.log(dirToWatch)
 
     const app = express();
     app.use(cors())

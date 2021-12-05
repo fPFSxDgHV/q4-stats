@@ -48,6 +48,8 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
+      <HeaderOption isSelected={mainWidget === 'play'}
+                    onClick={() => changeWidget('play', dispatch)}>Play</HeaderOption>
       <HeaderOption isSelected={mainWidget === 'stats'}
                     onClick={() => changeWidget('stats', dispatch)}>Stats</HeaderOption>
       <HeaderOption isSelected={mainWidget === 'matchHistory'}

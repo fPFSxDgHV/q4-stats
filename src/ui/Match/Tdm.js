@@ -78,7 +78,6 @@ const getPlayerData = (player) => {
 }
 
 const getPlayersData = (teamData) => {
-  console.log(flatten([...teamData.map(getPlayerData)]))
   return flatten([...teamData.map(getPlayerData)])
 }
 

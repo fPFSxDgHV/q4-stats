@@ -49,8 +49,6 @@ class DamageHelper {
       if (gunName === 'Railgun') {
         dmg-= DamageHelper.calcRailDmg(hits)
       }
-
-      console.log(gunName, gunData)
     }
 
     return dmg

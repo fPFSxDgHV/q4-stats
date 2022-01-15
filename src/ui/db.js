@@ -123,11 +123,10 @@ const matchHistoryStats = {
 }
 
 
-class DB {
-  static async addMatchStats(stats) {
-    const numberOfRowsInserted = await connection.insert({
-      into: matchHistoryStats.name,
-      values: stats
+class DuelMatchStats {
+  static async removeOldStats() {
+    await connection.remove({
+      from: matchHistoryStats.name
     })
   }
 
@@ -138,6 +137,33 @@ class DB {
     })
   }
 
+  static async addNewStats(stats) {
+    await DuelMatchStats.removeOldStats()
+    await DuelMatchStats.addDuelStats(stats)
+  }
+}
+
+class TdmMatchStats {
+  static async removeOldStats() {
+    await connection.remove({
+      from: tdmMatchesStats.name
+    })
+  }
+
+  static async addDuelStats(stats) {
+    const numberOfRowsInserted = await connection.insert({
+      into: tdmMatchesStats.name,
+      values: [stats]
+    })
+  }
+
+  static async addNewStats(stats) {
+    await TdmMatchStats.removeOldStats()
+    await TdmMatchStats.addDuelStats(stats)
+  }
+}
+
+class DB {
   static async addTdmStats(stats) {
     const numberOfRowsInserted = await connection.insert({
       into: tdmMatchesStats.name,
@@ -146,8 +172,8 @@ class DB {
   }
 
   static async addOverallStats({duels, tdms}) {
-    await DB.addDuelStats(duels)
-    await DB.addTdmStats(tdms)
+    await DuelMatchStats.addNewStats(duels)
+    await TdmMatchStats.addNewStats(tdms)
   }
 
   static async addDuel(duelData) {

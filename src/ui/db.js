@@ -123,7 +123,7 @@ const matchHistoryStats = {
 }
 
 
-class DuelMatchStats {
+export class DuelMatchStatsDB {
   static async removeOldStats() {
     await connection.remove({
       from: matchHistoryStats.name
@@ -138,8 +138,8 @@ class DuelMatchStats {
   }
 
   static async addNewStats(stats) {
-    await DuelMatchStats.removeOldStats()
-    await DuelMatchStats.addDuelStats(stats)
+    await DuelMatchStatsDB.removeOldStats()
+    await DuelMatchStatsDB.addDuelStats(stats)
   }
 }
 
@@ -172,7 +172,7 @@ class DB {
   }
 
   static async addOverallStats({duels, tdms}) {
-    await DuelMatchStats.addNewStats(duels)
+    await DuelMatchStatsDB.addNewStats(duels)
     await TdmMatchStats.addNewStats(tdms)
   }
 

@@ -1,6 +1,6 @@
 import {MatchHelper} from "../../ui/data";
 import {MatchData} from "../../ui/Match/Duel";
-import DB from "../../ui/db";
+import DB, {DuelMatchStatsDB} from "../../ui/db";
 
 export class MatchStats {
   static processMatches(duels, guid, type) {
@@ -51,6 +51,6 @@ export class MatchStats {
     const mapData = MatchStats.getData(duels, tdms, guid)
     const data = MatchStats.mapData(mapData)
 
-    await DB.addMatchStats(data)
+    await DuelMatchStatsDB.addNewStats(data)
   }
 }

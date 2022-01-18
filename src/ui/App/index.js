@@ -14,18 +14,17 @@ import {loadDuels, loadTdm} from "../MatchHistory/reducer";
 import Match from '../Match'
 import {loadDuelStats, loadMapStats, loadTdmStats} from "../Stats/reducer";
 import startWatcher from "../../node/pathWatcher";
+
 import Play from "../Play";
+import Theme from './Theme'
+
+import { AppWrapper} from "./styles";
 
 const MainWidgetWrapper = styled.div`
   margin-top: 40px;
 `
 
-const AppWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`
+
 
 export const loadAllTables = async (dispatch) => {
   const settings = await DB.getSettings()
@@ -57,10 +56,12 @@ const _App = () => {
   })
 
   return (
-    <AppWrapper>
-      <Header/>
-      <MainWidget/>
-    </AppWrapper>
+    <Theme>
+      <AppWrapper>
+        <Header/>
+        <MainWidget/>
+      </AppWrapper>
+    </Theme>
   )
 }
 

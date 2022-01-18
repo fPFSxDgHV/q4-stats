@@ -8,7 +8,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  background: #192638;
+  background: ${props => props.theme.header};
   color: white;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -17,6 +17,9 @@ const HeaderWrapper = styled.div`
 
   app-region: drag;
   -webkit-app-region: drag;
+
+  align-items: center;
+  justify-content: center;
 `
 
 const HeaderOption = styled.div`
@@ -26,8 +29,8 @@ const HeaderOption = styled.div`
   font-size: 24px;
   cursor: pointer;
   margin-right: 40px;
-
-  ${({isSelected}) => isSelected && 'border-bottom: 1px solid #468ffc;'}
+  
+  ${({isSelected, theme}) => isSelected && `border-bottom: 2px solid ${theme.typography.ally};`}
   
   &:first-of-type {
     margin-left: 5vw;

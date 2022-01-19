@@ -1,4 +1,4 @@
-import parser from 'fast-xml-parser'
+import parser, { XMLParser, XMLBuilder, XMLValidator } from 'fast-xml-parser'
 import path from 'path'
 import jetpack from 'fs-jetpack'
 import getDuelData from "./duel"
@@ -30,10 +30,8 @@ class Parser {
       arrayMode: false, //"strict"
       stopNodes: ["parse-me-as-string"]
     }
-
-    if (parser.validate(xml)) {
-      return parser.parse(xml, parseOptions)
-    }
+    const parser = new XMLParser(parseOptions)
+    return parser.parse(xml)
   }
 
   static async getListOfXMLFilesFromDir(dir) {

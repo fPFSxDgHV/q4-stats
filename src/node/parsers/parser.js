@@ -130,22 +130,28 @@ class Parser {
   }
 
   static async getAndUpdateMatchData() {
-    const statsPath = await DB.getStatsPath()
-    if (!statsPath) {
-      return
+    try {
+      const statsPath = await DB.getStatsPath()
+      if (!statsPath) {
+        console.log('stats path is not provided')
+        return
+      }
+      const data = await Parser.parseAllFiles(statsPath)
+      const duels = data.filter(q => q?.type?.toLowerCase() === "duel")
+      const tdms = data.filter(q => q?.type?.toLowerCase() === 'team dm')
+
+      const guid = Parser.findGuid(duels)
+      await DB.updateGuid(guid)
+      await MatchStats.processData(duels, tdms, guid)
+      const stats = Parser.getOverallStats(duels, tdms, guid)
+      await DB.addOverallStats(stats)
+
+      await DB.insertDuels(duels)
+      await DB.insertTdms(tdms)
+    } catch (e) {
+      console.error('e1', e)
     }
-    const data = await Parser.parseAllFiles(statsPath)
-    const duels = data.filter(q => q?.type?.toLowerCase() === "duel")
-    const tdms = data.filter(q => q?.type?.toLowerCase() === 'team dm')
 
-    const guid = Parser.findGuid(duels)
-    await DB.updateGuid(guid)
-    await MatchStats.processData(duels, tdms, guid)
-    const stats = Parser.getOverallStats(duels, tdms, guid)
-    await DB.addOverallStats(stats)
-
-    await DB.insertDuels(duels)
-    await DB.insertTdms(tdms)
 
   }
 

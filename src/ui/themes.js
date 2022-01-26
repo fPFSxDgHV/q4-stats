@@ -11,9 +11,10 @@ const dark = {
     caution: '#FDB05F',
     ally: '#2aa3cc',
     enemy: '#ff5859',
+    modalColor: '#3A4556',
     fontHeader: 'Open_Sans',
-    fontText: '',
-  }
+    fontText: 'Roboto',
+  },
 }
 
 export { dark }

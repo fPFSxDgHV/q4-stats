@@ -22,6 +22,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",
     "node-loader": "^0.6.0",
+    "rimraf": "^3.0.2",
     "style-loader": "^0.23.1",
     "url-loader": "^4.1.1",
     "webpack": "^5.58.1",
@@ -49,18 +50,22 @@
     "styled-components": "^5.3.3"
   },
   "scripts": {
-    "start:webpack:watch": "webpack --watch",
+    "start:webpack:watch": "rimraf ./dist1 && webpack --watch",
     "start:app": "electron ./dist1/index.js --trace-warnings",
     "start:webpack": "webpack",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --project \"./dist1\"",
-    "prepare:build": "yarn start:webpack && cd dist1/ && yarn && yarn dist",
-    "webpack:dev:watch": "webpack --progress --watch"
+    "webpack:prod": "rimraf ./dist1 && webpack --progress --env production",
+    "prepare:build": "yarn webpack:prod && cd dist1/ && yarn && yarn dist"
   },
   "build": {
     "appId": "com.electron.q4.stats",
     "mac": {
       "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "requireAdministrator"
     }
   }
 }

@@ -1,30 +1,14 @@
-export const maps = [
-  {
-    name: 'l4dm2_1',
-    sName: 'monsoon',
-    image: 'l4dm2_1.png'
-  },
-  {
-    name: 'wvwq4dm1',
-    sName: 'placebo',
-    image: 'wvwq4dm1.png'
-  },
-  {
-    name: 'ktonq4dm2',
-    sName: 'torment',
-    image: 'ktonq4dm2.png'
-  },
-  {
-    name: 'ktonq4dm4',
-    sName: 'ravage',
-    image: 'ktonq4dm4.png'
-  },
-  {
-    name: 'swq4dm1',
-    sName: 'phrantic',
-    image: 'swq4dm1.png'
-  }
-]
+export const maps = [{
+  name: 'l4dm2_1', sName: 'monsoon', image: 'l4dm2_1.png'
+}, {
+  name: 'wvwq4dm1', sName: 'placebo', image: 'wvwq4dm1.png'
+}, {
+  name: 'ktonq4dm2', sName: 'torment', image: 'ktonq4dm2.png'
+}, {
+  name: 'ktonq4dm4', sName: 'ravage', image: 'ktonq4dm4.png'
+}, {
+  name: 'swq4dm1', sName: 'phrantic', image: 'swq4dm1.png'
+}]
 
 export const guids = {
   "jQWZzSrjKls": "BetaRates",
@@ -141,4 +125,15 @@ export const servers = {
   '185.96.163.168:28004': 'Northern EU',
   '66.55.137.189:28004': 'New Jersey',
   '173.199.67.226:28004': 'Moscow',
+}
+
+export const serversData = {
+  '173.199.67.226:28004': {name: 'Moscow', flag: 'ru'},
+  '176.36.131.100:28004': {name: 'Ukraine', flag: 'ua'},
+  '108.61.112.181:28004': {name: 'Europe', flag: 'eu'},
+  '173.199.76.108:28004': {name: 'United Kingdom - 1', flag: 'uk'},
+  '185.251.226.69:28004': {name: 'United Kingdom - 2', flag: 'uk'},
+  '185.96.163.168:28004': {name: 'Northern EU', flag: 'eu'},
+  '68.232.163.17:28004': {name: 'Central US', flag: 'us'},
+  '66.55.137.189:28004': {name: 'New Jersey', flag: 'us'},
 }

@@ -17,4 +17,18 @@ const dark = {
   },
 }
 
+export class ThemeHelper {
+  static getFontHeader(props) {
+    return props?.theme?.typography?.fontHeader
+  }
+
+  static getHeaderColor(props) {
+    return props?.theme?.typography?.headerColor
+  }
+
+  static getFontText(props) {
+    return props?.theme?.typography?.fontText
+  }
+}
+
 export { dark }

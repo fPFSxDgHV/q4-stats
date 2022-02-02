@@ -1,4 +1,12 @@
-import {DuelHeaderDataWrapper, MatchWrapper, NamesWrapper, NameWrapper, TdWrapper, WeaponImg} from "./styles";
+import {
+  DuelHeaderDataWrapper,
+  MatchWrapper,
+  NamesWrapper,
+  NameWrapper,
+  TdWrapper,
+  ThWrapper,
+  WeaponImg
+} from "./styles";
 import React from "react";
 import {maps, MatchHelper, servers} from "../data";
 import {useSelector} from "react-redux";
@@ -227,11 +235,11 @@ const Table = ({ matchData }) => {
       {headerGroups.map(headerGroup => (
         <tr {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map(column => (
-            <th
+            <ThWrapper
               {...column.getHeaderProps()}
             >
               {column.render('Header')}
-            </th>
+            </ThWrapper>
           ))}
         </tr>
       ))}

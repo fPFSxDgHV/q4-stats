@@ -143,7 +143,7 @@ export class DuelMatchStatsDB {
   }
 }
 
-class TdmMatchStats {
+export class TdmMatchStats {
   static async removeOldStats() {
     await connection.remove({
       from: tdmMatchesStats.name

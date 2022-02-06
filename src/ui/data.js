@@ -11,36 +11,36 @@ export const maps = [{
 }]
 
 export const guids = {
-  "jQWZzSrjKls": "BetaRates",
-  "XiZLHBgpR1I": "cento",
-  "LE+kI0aPKus": "Dan",
-  "oc0N3RJA0Bc": "HAROSH1MA",
-  "Z1pyCMLNYDk": "igracsimon",
-  "GlKkn0ouSPw": "imar",
-  "sdPK/S/ac/c": "iudas",
-  "eiJIUirXqOA": "Gosciu",
-  "WZyj+XsBEGw": "gyro",
-  "jGy9B7K7ko0": "Kevon",
-  "Ke4jRKbYuPI": "Kloun",
-  "Msm9TCgykJc": "MsJuNN",
-  "g2NxJUVO/SI": "Namida",
-  "eC7UtJOk0Rk": "Noustaja",
-  "SGhRblwHm34": "nickaero",
-  "geQNGiRD4JA": "panikborke",
-  "XXIF/r7vMEk": "reez",
-  "oBICWDAI4q0": "Sanchez",
-  "LGOAiEOWiEk": "Snowy",
-  "L3YqPM82Hrk": "Shug",
-  "GuNHHUhxDtw": "sTPHN",
-  "M3if3gPtem4": "Stryder",
-  "f9uaA8nM8Xg": "Tai",
-  "B71Uwlyz/NU": "Toby",
-  "PZxQ7KguMII": "uN",
-  "Bg1PYMTGwRU": "vally",
-  "R54i5rCFiv8": "visa",
-  "cfSafJhD7ml": "Wylsa",
-  "RyKmV5Jf4So": "xtal",
-  "Fh4xiyjJjTU": "Zilla"
+  'jQWZzSrjKls': 'BetaRates',
+  'XiZLHBgpR1I': 'cento',
+  'LE+kI0aPKus': 'Dan',
+  'oc0N3RJA0Bc': 'HAROSH1MA',
+  'Z1pyCMLNYDk': 'igracsimon',
+  'GlKkn0ouSPw': 'imar',
+  'sdPK/S/ac/c': 'iudas',
+  'eiJIUirXqOA': 'Gosciu',
+  'WZyj+XsBEGw': 'gyro',
+  'jGy9B7K7ko0': 'Kevon',
+  'Ke4jRKbYuPI': 'Kloun',
+  'Msm9TCgykJc': 'MsJuNN',
+  'g2NxJUVO/SI': 'Namida',
+  'eC7UtJOk0Rk': 'Noustaja',
+  'SGhRblwHm34': 'nickaero',
+  'geQNGiRD4JA': 'panikborke',
+  'XXIF/r7vMEk': 'reez',
+  'oBICWDAI4q0': 'Sanchez',
+  'LGOAiEOWiEk': 'Snowy',
+  'L3YqPM82Hrk': 'Shug',
+  'GuNHHUhxDtw': 'sTPHN',
+  'M3if3gPtem4': 'Stryder',
+  'f9uaA8nM8Xg': 'Tai',
+  'B71Uwlyz/NU': 'Toby',
+  'PZxQ7KguMII': 'uN',
+  'Bg1PYMTGwRU': 'vally',
+  'R54i5rCFiv8': 'visa',
+  'cfSafJhD7ml': 'Wylsa',
+  'RyKmV5Jf4So': 'xtal',
+  'Fh4xiyjJjTU': 'Zilla'
 }
 
 export class MatchHelper {
@@ -90,7 +90,7 @@ export class MatchHelper {
   }
 
   static isTdmMatch(matchData) {
-    return matchData?.type === 'Team DM';
+    return matchData?.type === 'Team DM'
   }
 
   static wasDuelWon(matchData, guid) {
@@ -99,7 +99,7 @@ export class MatchHelper {
 
   static wasTdmWon(matchData, guid) {
     const team = matchData.team.reduce((acc, curr) => {
-      curr.player.forEach(player => {
+      curr?.player.forEach(player => {
         if (player.guid === guid) {
           acc = curr.name
         }
@@ -108,7 +108,6 @@ export class MatchHelper {
     }, '')
     const teamScore = matchData.team.find(q => q.name === team)?.score
     const enemyScore = matchData.team.find(q => q.name !== team)?.score
-
     if (teamScore === undefined || enemyScore === undefined) {
       return null
     }
@@ -128,12 +127,12 @@ export const servers = {
 }
 
 export const serversData = {
-  '173.199.67.226:28004': {name: 'Moscow', flag: 'ru'},
-  '176.36.131.100:28004': {name: 'Ukraine', flag: 'ua'},
-  '108.61.112.181:28004': {name: 'Europe', flag: 'eu'},
-  '173.199.76.108:28004': {name: 'United Kingdom - 1', flag: 'uk'},
-  '185.251.226.69:28004': {name: 'United Kingdom - 2', flag: 'uk'},
-  '185.96.163.168:28004': {name: 'Northern EU', flag: 'eu'},
-  '68.232.163.17:28004': {name: 'Central US', flag: 'us'},
-  '66.55.137.189:28004': {name: 'New Jersey', flag: 'us'},
+  '173.199.67.226:28004': { name: 'Moscow', flag: 'ru' },
+  '176.36.131.100:28004': { name: 'Ukraine', flag: 'ua' },
+  '108.61.112.181:28004': { name: 'Europe', flag: 'eu' },
+  '173.199.76.108:28004': { name: 'United Kingdom - 1', flag: 'uk' },
+  '185.251.226.69:28004': { name: 'United Kingdom - 2', flag: 'uk' },
+  '185.96.163.168:28004': { name: 'Northern EU', flag: 'eu' },
+  '68.232.163.17:28004': { name: 'Central US', flag: 'us' },
+  '66.55.137.189:28004': { name: 'New Jersey', flag: 'us' },
 }

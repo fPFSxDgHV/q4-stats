@@ -6,6 +6,7 @@ import getTdmData from "./tdm"
 import DB from "../../ui/db";
 import {MatchHelper} from "../../ui/data";
 import {MatchStats} from "./Stats";
+import { initMatchStats } from '../../ui/Stats/Matches/db'
 
 class Parser {
   static parseXML(xml) {
@@ -142,9 +143,9 @@ class Parser {
 
       const guid = Parser.findGuid(duels)
       await DB.updateGuid(guid)
-      await MatchStats.processData(duels, tdms, guid)
+      // await MatchStats.processData(duels, tdms, guid)
       const stats = Parser.getOverallStats(duels, tdms, guid)
-      await DB.addOverallStats(stats)
+      await initMatchStats(stats)
 
       await DB.insertDuels(duels)
       await DB.insertTdms(tdms)
@@ -186,6 +187,7 @@ class Parser {
   }
 
   static getOverallStats(duels, tdms, guid) {
+    console.log(tdms)
     const duelStats = {
       played: 0,
       wins: 0,
@@ -210,6 +212,7 @@ class Parser {
     })
     tdms.forEach(tdm => {
       const isWin = MatchHelper.wasTdmWon(tdm, guid)
+      console.log('isWin', isWin)
       if (isWin === null) {
         return
       }

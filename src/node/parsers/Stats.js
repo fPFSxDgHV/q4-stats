@@ -1,6 +1,5 @@
-import {MatchHelper} from "../../ui/data";
-import {MatchData} from "../../ui/Match/Duel";
-import DB, {DuelMatchStatsDB} from "../../ui/db";
+import { MatchHelper } from '../../ui/data'
+import { initDuelAndDuelStats } from '../../ui/Stats/Matches/db'
 
 export class MatchStats {
   static processMatches(duels, guid, type) {

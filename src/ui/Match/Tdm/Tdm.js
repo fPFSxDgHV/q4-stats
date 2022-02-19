@@ -1,10 +1,10 @@
-import React from "react";
-import {MatchData} from "./Duel";
-import {useTable} from "react-table";
-import {find, map, pipe, prop} from "ramda";
-import {flatten} from "ramda";
-import {MatchHelper} from "../data";
-import DamageHelper from "./damage";
+import React from 'react'
+import { useTable } from 'react-table'
+import { MatchData } from '../Duel'
+import { find, flatten, map, pipe, prop } from 'ramda'
+import { MatchHelper } from '../../data'
+import DamageHelper from '../damage'
+import { TdmDataWrapper } from './styles'
 
 const getTeamData = player => {
   return {
@@ -64,7 +64,6 @@ const getPlayerData = (player) => {
   }
 
 
-
   const rocket = {
     col1: 'Rocket',
     col2: '5',
@@ -73,6 +72,7 @@ const getPlayerData = (player) => {
     col5: '60 %'
   }
 
+  console.log(result)
 
   return result
 }
@@ -99,6 +99,7 @@ const getTeamDataOverview = (matchData, type) => {
 }
 
 const OverallData = ({ teamData, type }) => {
+
   const data = React.useMemo(
     () => getPlayersData(teamData, 'Marine'),
     []
@@ -136,59 +137,45 @@ const OverallData = ({ teamData, type }) => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({columns, data})
+  } = useTable({ columns, data })
   const Table = () => (
-    <table {...getTableProps()} style={{border: 'solid 1px blue'}}>
+    <table { ...getTableProps() }>
       <thead>
-      {headerGroups.map(headerGroup => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map(column => (
-            <th
-              {...column.getHeaderProps()}
-              style={{
-                borderBottom: 'solid 3px red',
-                background: 'aliceblue',
-                color: 'black',
-                fontWeight: 'bold',
-              }}
-            >
-              {column.render('Header')}
+      { headerGroups.map(headerGroup => (
+        <tr { ...headerGroup.getHeaderGroupProps() }>
+          { headerGroup.headers.map(column => (
+            <th { ...column.getHeaderProps() }>
+              { column.render('Header') }
             </th>
-          ))}
+          )) }
         </tr>
-      ))}
+      )) }
       </thead>
-      <tbody {...getTableBodyProps()}>
-      {rows.map(row => {
+      <tbody { ...getTableBodyProps() }>
+      { rows.map(row => {
         prepareRow(row)
         return (
-          <tr {...row.getRowProps()}>
-            {row.cells.map(cell => {
+          <tr { ...row.getRowProps() }>
+            { row.cells.map(cell => {
               return (
                 <td
-                  {...cell.getCellProps()}
-                  style={{
-                    padding: '10px',
-                    border: 'solid 1px gray',
-                    background: 'papayawhip',
-                  }}
+                  { ...cell.getCellProps() }
                 >
-                  {cell.render('Cell')}
+                  { cell.render('Cell') }
                 </td>
               )
-            })}
+            }) }
           </tr>
         )
-      })}
+      }) }
       </tbody>
     </table>
   )
 
   return (
-    <div>
-      <div>{`${type}:`}</div>
+    <TdmDataWrapper>
       <Table/>
-    </div>
+    </TdmDataWrapper>
   )
 }
 
@@ -205,18 +192,18 @@ const getPlayers = (matchData, type) => {
     , matchData.players)
 }
 
-const Tdm = ({matchData}) => {
+const Tdm = ({ matchData }) => {
   const players = getPlayers(matchData)
 
-  const marine = players.filter(q => q.team === "Marine")
-  const strogg = players.filter(q => q.team === "Strogg")
+  const marine = players.filter(q => q.team === 'Marine')
+  const strogg = players.filter(q => q.team === 'Strogg')
 
   return (
     <div>
-      <MatchData matchData={matchData}/>
+      <MatchData matchData={ matchData }/>
       <div>
-        <OverallData teamData={marine} type={'Marine'}/>
-        <OverallData teamData={strogg} type={'Strogg'}/>
+        <OverallData teamData={ marine } type={ 'Marine' }/>
+        <OverallData teamData={ strogg } type={ 'Strogg' }/>
       </div>
     </div>
   )

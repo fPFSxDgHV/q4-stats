@@ -29,6 +29,18 @@ export class ThemeHelper {
   static getFontText(props) {
     return props?.theme?.typography?.fontText
   }
+
+  static getModalColor(props) {
+    return props?.theme?.typography?.modalColor
+  }
+
+  static getSubheaderColor(props) {
+    return props?.theme?.subHeader
+  }
+
+  static getAllyColor(props) {
+    return props?.theme?.typography?.ally
+  }
 }
 
 export { dark }

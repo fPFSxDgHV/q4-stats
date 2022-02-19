@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import Matches from "./Matches";
+import Matches from "./Matches/Matches";
 import Maps from "./Maps";
 
 const HeaderWrapper = styled.div`

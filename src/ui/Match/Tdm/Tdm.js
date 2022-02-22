@@ -1,10 +1,9 @@
 import React from 'react'
-import { useTable } from 'react-table'
 import { MatchData } from '../Duel'
 import { find, flatten, map, pipe, prop } from 'ramda'
 import { MatchHelper } from '../../data'
 import DamageHelper from '../damage'
-import { TdmDataWrapper } from './styles'
+import OverallData from './OverallData'
 
 const getTeamData = player => {
   return {
@@ -16,70 +15,8 @@ const getTeamData = player => {
   }
 }
 
-const getScoreHeaders = (player) => {
-  return MatchHelper.getNameFromGuids(player.guid, player.name)
-}
-
-const getSingleDamageData = (weaponName, weaponData) => {
-  return {
-    col1: weaponName,
-    col2: weaponData.kills,
-    col3: 0,
-    col4: DamageHelper.getHitsOverShots(weaponData.hits, weaponData.shots),
-    col5: DamageHelper.getGunAcc(weaponData.hits, weaponData.shots)
-  }
-}
-
-const getPlayerData = (player) => {
-  const result = []
-
-  const scoreHeaders = {
-    col1: getScoreHeaders(player),
-    col2: 'net',
-    col3: 'kills',
-    col4: 'score',
-    col5: 'suicides'
-  }
-
-  const scoreData = {
-    col1: '',
-    col2: player.net,
-    col3: player.kills,
-    col4: player.score,
-    col5: player.suicides,
-  }
-
-  const damageHeaders = {
-    col1: 'Weapons',
-    col2: 'kills',
-    col3: 'dmg',
-    col4: 'hits',
-    col5: 'acc'
-  }
-  result.push(scoreHeaders, scoreData, damageHeaders)
 
 
-  for (const [key, value] of Object.entries(player.weapons)) {
-    result.push(getSingleDamageData(key, value))
-  }
-
-
-  const rocket = {
-    col1: 'Rocket',
-    col2: '5',
-    col3: '4000',
-    col4: '60/100',
-    col5: '60 %'
-  }
-
-  console.log(result)
-
-  return result
-}
-
-const getPlayersData = (teamData) => {
-  return flatten([...teamData.map(getPlayerData)])
-}
 
 const getTeamDataOverview = (matchData, type) => {
   const guids = pipe(
@@ -96,87 +33,6 @@ const getTeamDataOverview = (matchData, type) => {
     net: player?.net,
     suicides: player?.suicides,
   }))
-}
-
-const OverallData = ({ teamData, type }) => {
-
-  const data = React.useMemo(
-    () => getPlayersData(teamData, 'Marine'),
-    []
-  )
-
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: '',
-        accessor: 'col1',
-      },
-      {
-        Header: '',
-        accessor: 'col2',
-      },
-      {
-        Header: '',
-        accessor: 'col3',
-      },
-      {
-        Header: '',
-        accessor: 'col4',
-      },
-      {
-        Header: '',
-        accessor: 'col5',
-      },
-    ],
-    []
-  )
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data })
-  const Table = () => (
-    <table { ...getTableProps() }>
-      <thead>
-      { headerGroups.map(headerGroup => (
-        <tr { ...headerGroup.getHeaderGroupProps() }>
-          { headerGroup.headers.map(column => (
-            <th { ...column.getHeaderProps() }>
-              { column.render('Header') }
-            </th>
-          )) }
-        </tr>
-      )) }
-      </thead>
-      <tbody { ...getTableBodyProps() }>
-      { rows.map(row => {
-        prepareRow(row)
-        return (
-          <tr { ...row.getRowProps() }>
-            { row.cells.map(cell => {
-              return (
-                <td
-                  { ...cell.getCellProps() }
-                >
-                  { cell.render('Cell') }
-                </td>
-              )
-            }) }
-          </tr>
-        )
-      }) }
-      </tbody>
-    </table>
-  )
-
-  return (
-    <TdmDataWrapper>
-      <Table/>
-    </TdmDataWrapper>
-  )
 }
 
 const getPlayerTeamName = (matchData, guid) => {

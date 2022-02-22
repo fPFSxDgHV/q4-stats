@@ -41,6 +41,10 @@ export class ThemeHelper {
   static getAllyColor(props) {
     return props?.theme?.typography?.ally
   }
+  static getEnemyColor(props) {
+    return props?.theme?.typography?.enemy
+  }
+
 }
 
 export { dark }

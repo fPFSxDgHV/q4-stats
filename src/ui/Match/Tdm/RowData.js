@@ -3,9 +3,12 @@ import React from 'react'
 
 export const RowData = ({ item, index, type }) => {
   if (!item || item === 'Weapons') {
-    return <EmptyRow serial={ index } type={type}/>
+    return <EmptyRow serial={ index } type={ type }/>
   }
 
-  return <RowDataWrapper serial={ index } type={type} key={ index }>{ item }</RowDataWrapper>
+  return (
+    <RowDataWrapper serial={ index } type={ type } key={ index }>
+      { item }
+    </RowDataWrapper>)
 }
 
